@@ -1,0 +1,43 @@
+﻿@model TICRM.DAL.Tracking
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMetronicMaster.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tracking</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Devicemac)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Devicemac)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Devicelocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Devicelocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Datatime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Datatime)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

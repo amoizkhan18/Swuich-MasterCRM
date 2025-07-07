@@ -1,0 +1,516 @@
+﻿@model TICRM.DTOs.WorkFlowMappingDTO
+
+@{
+    ViewBag.Title = "Edit WorkFlowMappings";
+}
+
+
+        <!-- BEGIN: Subheader -->
+        <div class="m-subheader ">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto">
+                    <h3 class="m-subheader__title m-subheader__title--separator">WorkFlow Mappings</h3>
+                    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                        <li class="m-nav__item m-nav__item--home">
+                            <a href="@Url.Action("Index","Dashboard")" class="m-nav__link m-nav__link--icon">
+                                <i class="m-nav__link-icon la la-home"></i>
+                            </a>
+                        </li>
+                        <li class="m-nav__separator">-</li>
+                        <li class="m-nav__item">
+                            <a href="@Url.Action("Index","WorkFlowMappings")" class="m-nav__link">
+                                <span class="m-nav__link-text">WorkFlow Mappings</span>
+                            </a>
+                        </li>
+                        <li class="m-nav__separator">-</li>
+                        <li class="m-nav__item">
+                            <a href="@Url.Action("Edit","WorkFlowMappings",new { id = Model.WorkFlowMappingId})" class="m-nav__link">
+                                <span class="m-nav__link-text">@ViewBag.Title</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--Create Button-->
+                <div>
+                    <a href="@Url.Action("Create", "WorkFlowMappings" )" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air">
+                        <span>
+                            <i class="la la-plus"></i>
+                            <span>New WorkFlow Mappings</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- END: Subheader -->
+        <div class="m-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--begin::Portlet-->
+                    <div class="m-portlet">
+
+
+                        @*<div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <span class="m-portlet__head-icon m--hide">
+                                            <i class="la la-gear"></i>
+                                        </span>
+                                        <h3 class="m-portlet__head-text">
+                                            2 Columns Form Layout
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        <!--begin::Form-->
+
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditWorkFlowMappingForm", @class = "m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed" }))
+                        {
+                            @Html.AntiForgeryToken()
+                        <div class="m-portlet__body">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.WorkFlowMappingId)
+
+
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label>Source</label>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.WorkFlowId, "WorkFlowId", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("WorkFlowId", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.WorkFlowId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Action, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("Action", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Action, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.SourceType, "SourceType", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("SourceType", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.SourceType, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" id="DivSourceValue">
+                                        @Html.LabelFor(model => model.SourceValue, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            <select class="form-control" id="SourceValue" name="SourceValue"></select>
+                                            @*@Html.EditorFor(model => model.SourceValue, new { htmlAttributes = new { @class = "form-control" } })*@
+                                            @Html.ValidationMessageFor(model => model.SourceValue, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" style="display:none;">
+                                        @Html.LabelFor(model => model.SourceData, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.SourceData, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.SourceData, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="col-md-6">
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-6" id="AppendDivInputFields">
+
+                                </div>
+                                <div class="col-md-6"></div>
+
+
+                            </div>
+
+
+
+                        </div>
+                            <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                                <div class="m-form__actions m-form__actions--solid">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <button type="button" id="btnSave" class="btn btn-success"><i class="la la-save"></i> Submit</button>
+                                            <button type="reset" class="btn btn-secondary"><i class="la la-refresh"></i> Cancel</button>
+                                        </div>
+                                        <div class="col-lg-6 m--align-right">
+                                            <a href="/WorkFlowMappings/Index" class="btn btn-secondary m-btn m-btn--icon m-btn--wide m-btn--md m--margin-right-10">
+                                                <span>
+                                                    <i class="la la-arrow-left"></i>
+                                                    <span>Back to List</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Portlet-->
+                </div>
+            </div>
+        </div>
+   
+
+
+@section scripts{
+
+    <script>
+     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    $(document).ready(function () {
+        $('#searchNavigationList').append('<li><a href="/WorkFlowMappings/Index">WorkFlowMappings</a></li>');
+        $('#searchNavigationList').append('<li><a href="@Url.Action("Edit", "WorkFlowMappings", new { id = Model.WorkFlowMappingId })">Edit @Model.WorkFlow.Name</a></li>');
+
+        GetSourceDatatype($('#SourceType').val(), 'Name');
+        LoadInputField();
+
+
+        if ('@Model.Action' == 'Update') {
+
+            documentreadySourceValue('@Model.SourceValue');
+            $('#DivSourceValue').show();
+        }
+        else {
+            var data = JSON.parse($('#SourceData').val());
+            for (var i = 0; i < Sourcedatatypes.length; i++) {
+                var value = Sourcedatatypes[i].ColumnName;
+                $('#' + Sourcedatatypes[i].ColumnName).val(data[Sourcedatatypes[i].ColumnName]);
+            }
+            $('#SourceData').val('');
+            $('#DivSourceValue').hide();
+        }
+
+
+    });
+
+
+     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    var Sourcedatatypes = [];
+
+    var GetSourceDatatype = function (value, selectedValue) {
+
+        var obj = { type: value }
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowMappings/GetWorkTypeValue",
+            data: obj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                var Columnsdata = response.Columns;
+                $('#SourceColumn').html('');
+                var options = '';
+                options += '<option value="Select">Select</option>';
+                for (var i = 0; i < Columnsdata.length; i++) {
+                    if (Columnsdata[i].Text == selectedValue) {
+                        options += '<option selected="selected" value="' + Columnsdata[i].Value + '">' + Columnsdata[i].Text + '</option>';
+                    }
+                    else {
+                        options += '<option value="' + Columnsdata[i].Value + '">' + Columnsdata[i].Text + '</option>';
+                    }
+                }
+                $('#SourceColumn').append(options);
+                Sourcedatatypes = response.DataTypes;
+            },
+            failure: function () {
+                alert("Failed!");
+            }
+        });
+
+    }
+
+    $("#SourceType").change(function () {
+        LoadInputField();
+    });
+
+    $("#Action").change(function () {
+
+        var ActionValue = $('#Action').val();
+
+        if (ActionValue == "" || ActionValue == "Please Select") {
+            alert("Please Select Any Action");
+        }
+        else if (ActionValue == "Create") {
+
+            $('#SourceValue').val('');
+            $('#DivSourceValue').hide();
+        }
+        else if (ActionValue == "Update") {
+            $('#SourceValue').val('');
+            $('#DivSourceValue').show();
+            LoadInputField();
+
+        }
+
+    });
+
+    var LoadInputField = function () {
+
+        if ($('#SourceType').val() == "" || $('#SourceType').val() == "Please Select") { return false; }
+        Sourcedatatypes = [];
+        if ($('#Action').val() == "Create") {
+
+
+
+            var obj = { type: $('#SourceType').val() }
+            $.ajax({
+                type: "GET",
+                url: "/WorkFlowMappings/GetWorkTypeValue",
+                data: obj,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    console.log(response);
+
+                    Sourcedatatypes = response.DataTypes;
+
+
+                    var Columnsdata = response.Columns;
+
+                    $('#AppendDivInputFields').html('');
+                    var inputField = '';
+                    for (var i = 0; i < Columnsdata.length; i++) {
+
+                        var column = Sourcedatatypes.filter(x => x.ColumnName === Columnsdata[i].Text);
+                        if (column[0].DataType == "Guid") {
+                            loadNewDDList(Columnsdata[i].Text);
+                        }
+                        else {
+                            inputField += '<div class="form-group"><label class="control-label col-md-2" for="' + Columnsdata[i].Text + '">' + Columnsdata[i].Text + '</label>';
+                            inputField += '<div class="col-md-10">';
+                            inputField += '<input class="form-control text-box single-line" id="' + Columnsdata[i].Text + '" name="' + Columnsdata[i].Text + '" type="text" value="">';
+                            inputField += '<span class="field-validation-valid text-danger" data-valmsg-for="' + Columnsdata[i].Text + '" data-valmsg-replace="true"></span></div></div>';
+                        }
+
+                    }
+                    $('#AppendDivInputFields').append(inputField);
+
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+        }
+        else if ($('#Action').val() == "Update") {
+            loadSourceValueDD();
+            var obj = { type: $('#SourceType').val() }
+            $.ajax({
+                type: "GET",
+                url: "/WorkFlowMappings/GetWorkTypeValue",
+                data: obj,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    console.log(response);
+
+                    Sourcedatatypes = response.DataTypes;
+
+                    var Columnsdata = response.Columns;
+
+                    $('#AppendDivInputFields').html('');
+                    $('#SourceValue').val('');
+                    $('#DivSourceValue').show();
+
+                    var inputField = '';
+                    for (var i = 0; i < Columnsdata.length; i++) {
+
+                        var column = Sourcedatatypes.filter(x => x.ColumnName === Columnsdata[i].Text);
+                        if (column[0].DataType == "Guid") {
+                            loadNewDDList(Columnsdata[i].Text);
+                        }
+                        else {
+                            inputField += '<div class="form-group"><label class="control-label col-md-2" for="' + Columnsdata[i].Text + '">' + Columnsdata[i].Text + '</label>';
+                            inputField += '<div class="col-md-10">';
+                            inputField += '<input class="form-control text-box single-line" id="' + Columnsdata[i].Text + '" name="' + Columnsdata[i].Text + '" type="text" value="">';
+                            inputField += '<span class="field-validation-valid text-danger" data-valmsg-for="' + Columnsdata[i].Text + '" data-valmsg-replace="true"></span></div></div>';
+                        }
+                    }
+
+                    $('#AppendDivInputFields').append(inputField);
+
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+        }
+        else {
+            alert("Please Select Any Action");
+        }
+
+    }
+
+    var loadNewDDList = function (ColumnName) {
+        var obj = { type: $('#SourceType').val(), column: ColumnName }
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowMappings/GetDropDownOfSourceValue",
+            data: obj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function (response) {
+
+                var options1 = '<div class="form-group"><label class="control-label col-md-2" for="' + ColumnName + '">' + ColumnName + '</label>';
+                options1 += '<div class="col-md-10">';
+                options1 += '<select class="form-control" id="' + ColumnName + '" name="' + ColumnName + '"></select>';
+                options1 += '<span class="field-validation-valid text-danger" data-valmsg-for="' + ColumnName + '" data-valmsg-replace="true"></span></div></div>';
+
+                $('#AppendDivInputFields').append(options1);
+
+                var options = '';
+                options += '<option value="Select">Select</option>';
+                for (var i = 0; i < response.length; i++) {
+
+                    options += '<option value="' + response[i].Value + '">' + response[i].Text + '</option>';
+                }
+                $("#" + ColumnName).append(options);
+            },
+            failure: function () {
+                alert("Failed!");
+            }
+        });
+    }
+
+    var loadSourceValueDD = function () {
+
+        var sourceType = $('#SourceType').val();
+
+        var columnName = "";
+        if (sourceType == "Lead" || sourceType == "Account") {
+            columnName = "Name";
+        }
+
+        var obj = { type: sourceType, column: columnName }
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowMappings/GetDropDownOfSourceValue",
+            data: obj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                $('#SourceValue').html('');
+                var options = '';
+                options += '<option value="Select">Select</option>';
+                for (var i = 0; i < response.length; i++) {
+                    options += '<option value="' + response[i].Value + '">' + response[i].Text + '</option>';
+                }
+                $('#SourceValue').append(options);
+            },
+            failure: function () {
+                alert("Failed!");
+            }
+        });
+    }
+
+    $('#SourceValue').change(function () {
+        loadSourceValues();
+    });
+
+    var loadSourceValues = function () {
+        var obj = { type: $('#SourceType').val(), Selected: $('#SourceValue').val() }
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowMappings/GetObjectOnId",
+            data: obj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function (response) {
+
+                for (var i = 0; i < Sourcedatatypes.length; i++) {
+                    var value = Sourcedatatypes[i].ColumnName;
+                    $('#' + Sourcedatatypes[i].ColumnName).val(response[Sourcedatatypes[i].ColumnName]);
+                }
+
+            },
+            failure: function () {
+                alert("Failed!");
+            }
+        });
+    }
+
+    $('#btnSave').on('click', function () {
+        var fields = {};
+        $("form").find(":input").each(function () {
+            fields[this.name] = $(this).val();
+        });
+        $('#SourceData').val(JSON.stringify(fields));
+        mApp.blockPage({
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        })
+        $('#EditWorkFlowMappingForm').submit();
+    });
+
+     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    var documentreadySourceValue = function (Selected) {
+        var obj = { type: $('#SourceType').val(), column: 'Name' }
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowMappings/GetDropDownOfSourceValue",
+            data: obj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                $('#SourceValue').html('');
+                var options = '';
+                options += '<option value="Select">Select</option>';
+                for (var i = 0; i < response.length; i++) {
+
+                    if (response[i].Value == Selected) {
+                        options += '<option selected="selected" value="' + response[i].Value + '">' + response[i].Text + '</option>';
+                    }
+                    else {
+                        options += '<option value="' + response[i].Value + '">' + response[i].Text + '</option>';
+                    }
+                }
+
+                $('#SourceValue').append(options);
+
+                loadSourceValues();
+            },
+            failure: function () {
+                alert("Failed!");
+            }
+        });
+
+    }
+
+    </script>
+
+}
+

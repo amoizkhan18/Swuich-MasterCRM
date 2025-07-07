@@ -1,0 +1,589 @@
+﻿@model TICRM.DTOs.CalendarEventDTO
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFullCalendar.cshtml";
+}
+
+<link href="~/Content/assets/vendors/custom/jquery-ui/jquery-ui.bundle.css" rel="stylesheet" />
+
+<link href="~/Content/TagInput/taginput.css" rel="stylesheet" />
+
+
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Calendar
+        <small>Control panel</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Calendar</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Create Event</h3>
+                </div>
+                <div class="box-body">
+
+
+
+
+                    <div class="form-group">
+                        <label class="form-control-label">Event Name</label>
+                        <input type="text" class="form-control" name="EventName" id="EventName" value="" placeholder="Enter Event Name" />
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label class="form-control-label">Start Date</label>
+                        <input type="text" class="form-control" name="EventStartDate" id="EventStartDate" value="" placeholder="Enter Event Date" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">Start Time</label>
+                        <input type="text" class="form-control" name="EventStartTime" id="EventStartTime" value="" placeholder="hh:mm" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">End Date</label>
+                        <input type="text" class="form-control" name="EventEndDate" id="EventEndDate" value="" placeholder="Event End Date" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">End Time</label>
+                        <input type="text" class="form-control" name="EventEndTime" id="EventEndTime" value="" placeholder="hh:mm" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">Event Description</label>
+                        <textarea id="EventDescription" type="text" class="form-control" placeholder="Enter Description"></textarea>
+                    </div><!-- /input-group -->
+
+                    <label class="form-control-label">Add Guest</label>
+
+                    <div class="emailtag">
+                        <div id="tags">
+                            <input type="text" class="form-control" value="">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <table>
+                            <tr>
+                                <td>
+                                    <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Submit Event</button>
+                                </td>
+                                <td>
+                                    <button id="signout_button" class="btn btn-primary btn-flat" style="display: none;">Sign Out</button>
+                                    <button id="authorize_button" class="btn btn-primary btn-flat" style="display: none;">Authorize</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><!-- /input-group -->
+
+
+                    <div class="input-group">
+                        @*<p>Google Calendar API Quickstart</p>*@
+                        @*<button id="AddEvent">Add Events</button>*@
+
+                        <!--Add buttons to initiate auth sequence and sign out-->
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.col -->
+        <div class="col-md-9">
+            <div class="box box-primary">
+                <div class="box-body no-padding calendarDIV">
+                    <!-- THE CALENDAR -->
+                    <div id="calendar"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /. box -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</section><!-- /.content -->
+<!-- jQuery 2.1.3 -->
+<script src="~/Content/plugins/jQuery/jQuery-2.1.3.min.js"></script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
+<script src="~/Content/TagInput/taginput.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#EventStartDate").datepicker({
+            dateFormat: 'yy-mm-dd',//check change
+            changeMonth: true,
+            changeYear: true
+        });
+        $("#EventEndDate").datepicker({
+            dateFormat: 'yy-mm-dd',//check change
+            changeMonth: true,
+            changeYear: true
+        });
+
+
+        GetActivitydata()
+
+    });
+
+
+    function insertEmailTag(value) {
+        if (value) {
+            $("#tags").prepend('<span class="emailAdd" tabindex="1">' + value + '</span>');
+        }
+
+    }
+
+
+
+    var GetActivitydata = function () {
+        var data = "@ViewBag.id";
+        if (data == "") {
+            return false;
+        }
+        var obj = { id: data }
+
+        $.ajax({
+            type: "GET",
+            url: "/Calendar/GetActivityForCalendar",
+            data:obj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                $('#EventName').val(response.Summary);
+                $('#EventDescription').val(response.Description);
+                for (var i = 0; i < response.Attendees.length; i++) {
+                    insertEmailTag(response.Attendees[i].Email);
+                }
+
+            },
+            failure: function () {
+                alert("Failed!");
+            }
+        });
+
+    }
+
+
+
+
+
+
+    var EventList = [];
+    var EventListItem = [];
+    var FullCalendarList = [];
+
+    $('#EventEndTime').change(function () {
+
+        var time = $('#EventEndTime').val();
+        // regular expression to match required time format
+        re = /^(\d{1,2}):(\d{2})([ap]m)?$/;
+        if (time != '') {
+            if (regs = time.match(re)) {
+                if (regs[3]) {
+                    // 12-hour value between 1 and 12
+                    if (regs[1] < 1 || regs[1] > 12) {
+                        alert("Invalid value for hours: " + regs[1]);
+                        $('#EventEndTime').focus();
+                        return false;
+                    }
+                } else {
+                    // 24-hour value between 0 and 23
+                    if (regs[1] > 23) {
+                        alert("Invalid value for hours: " + regs[1]);
+                        $('#EventEndTime').focus();
+                        return false;
+                    }
+                }
+                // minute value between 0 and 59
+                if (regs[2] > 59) {
+                    alert("Invalid value for minutes: " + regs[2]);
+                    $('#EventEndTime').focus();
+                    return false;
+                }
+            } else {
+                alert("Invalid time format: " + time);
+                $('#EventEndTime').focus();
+                return false;
+            }
+        }
+
+    });
+
+    $('#EventStartTime').change(function () {
+
+        var time = $('#EventStartTime').val();
+        // regular expression to match required time format
+        re = /^(\d{1,2}):(\d{2})([ap]m)?$/;
+        if (time != '') {
+            if (regs = time.match(re)) {
+                if (regs[3]) {
+                    // 12-hour value between 1 and 12
+                    if (regs[1] < 1 || regs[1] > 12) {
+                        alert("Invalid value for hours: " + regs[1]);
+                        $('#EventStartTime').focus();
+                        return false;
+                    }
+                } else {
+                    // 24-hour value between 0 and 23
+                    if (regs[1] > 23) {
+                        alert("Invalid value for hours: " + regs[1]);
+                        $('#EventStartTime').focus();
+                        return false;
+                    }
+                }
+                // minute value between 0 and 59
+                if (regs[2] > 59) {
+                    alert("Invalid value for minutes: " + regs[2]);
+                    $('#EventStartTime').focus();
+                    return false;
+                }
+            } else {
+                alert("Invalid time format: " + time);
+                $('#EventStartTime').focus();
+                return false;
+            }
+        }
+
+    });
+
+    function addnewevent() {
+
+        GetInputTag();
+
+        var data = {
+            "summary": $('#EventName').val(),
+            //"location": "800 Howard St., San Francisco, CA 94103",
+            "kind": "calendar#calendar",
+            "description": $('#EventDescription').val(),
+            "start": {
+                "dateTime": new Date($('#EventStartDate').val() + "T" + $('#EventStartTime').val()),
+                "timeZone": "Asia/Karachi"
+            },
+            "end": {
+
+                "dateTime": new Date($('#EventEndDate').val() + "T" + $('#EventEndTime').val()),
+                "timeZone": "Asia/Karachi"
+            },
+            //"recurrence": [
+            //    "RRULE:FREQ=DAILY;COUNT=2"
+            //],
+            "attendees": arrayoftag,
+               // [{ "email": "aqil@techimplement.com" }],
+            "reminders": {
+                "useDefault": false,
+                "overrides": [
+                    {
+                        "method": "email", "minutes": 24 * 60
+                    },
+                    { "method": "popup", "minutes": 10 }
+                ]
+            }
+        };
+        gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': data
+        }).then(function (response) {
+            var events = response.result.items;
+            window.location.reload();
+        });
+    }
+
+    var date = new Date();
+    var d = date.getDate(),
+        m = date.getMonth(),
+        y = date.getFullYear();
+
+
+    var LoadFullCalendar = function (data) {
+        $('#calendarDIV').html('');
+        $('#calendarDIV').html('<div id="calendar"></div>');
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            buttonText: {
+                today: 'today',
+                month: 'month',
+                week: 'week',
+                day: 'day'
+            },
+            //Random default events
+            events: data,
+            //editable: true,
+            //droppable: true, // this allows things to be dropped onto the calendar !!!
+            //drop: function (date, allDay) { // this function is called when something is dropped
+
+            //    // retrieve the dropped element's stored Event Object
+            //    var originalEventObject = $(this).data('eventObject');
+
+            //    // we need to copy it, so that multiple events don't have a reference to the same object
+            //    var copiedEventObject = $.extend({}, originalEventObject);
+
+            //    // assign it the date that was reported
+            //    copiedEventObject.start = date;
+            //    copiedEventObject.allDay = allDay;
+            //    copiedEventObject.backgroundColor = $(this).css("background-color");
+            //    copiedEventObject.borderColor = $(this).css("border-color");
+
+            //    // render the event on the calendar
+            //    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+            //    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+            //    // is the "remove after drop" checkbox checked?
+            //    if ($('#drop-remove').is(':checked')) {
+            //        // if so, remove the element from the "Draggable Events" list
+            //        $(this).remove();
+            //    }
+
+            //},
+
+
+            //googleCalendarApiKey: "AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE",
+            //events: "en.usa#holiday@group.v.calendar.google.com",
+            eventClick: function (e) {
+                return window.open(e.url, "gcalevent", "width=700,height=600"), !1
+            },
+            loading: function (e) { },
+
+
+            eventRender: function (event, element, view) {
+                // for hide an event
+                //if (view.name == 'listDay') {
+                //    element.find(".fc-list-item-time").append("<span class='closeon'>X </span>");
+                //} else {
+                //    element.find(".fc-content").prepend("<span class='closeon'>X </span>");
+                //}
+
+
+                element.find(".closeon").on('click', function () {
+                    $('#calendar').fullCalendar('removeEvents', event._id);
+                    console.log('delete');
+                });
+            }
+
+
+        });
+
+    }
+
+
+    // Client ID and API key from the Developer Console
+    var CLIENT_ID = '201742374044-e4rti1noa0dg67ssec127jej0g3tvjou.apps.googleusercontent.com';
+    var API_KEY = 'AIzaSyCRmNmIqEudOnSj2rMsiHyhWB6zGxZPO54';
+
+
+    // Array of API discovery doc URLs for APIs used by the quickstart
+    var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+    // Authorization scopes required by the API; multiple scopes can be
+    // included, separated by spaces.
+    var SCOPES = "https://www.googleapis.com/auth/calendar";
+
+    var authorizeButton = document.getElementById('authorize_button');
+    var signoutButton = document.getElementById('signout_button');
+    var addEvent = document.getElementById('add-new-event');
+
+
+
+    /**
+     *  On load, called to load the auth2 library and API client library.
+     */
+    function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+    }
+
+    /**
+     *  Initializes the API client library and sets up sign-in state
+     *  listeners.
+     */
+    function initClient() {
+        gapi.client.init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+        }).then(function () {
+            // Listen for sign-in state changes.
+            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+            // Handle the initial sign-in state.
+            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            authorizeButton.onclick = handleAuthClick;
+            signoutButton.onclick = handleSignoutClick;
+            addEvent.onclick = addnewevent;
+
+        });
+    }
+
+    /**
+     *  Called when the signed in status changes, to update the UI
+     *  appropriately. After a sign-in, the API is called.
+     */
+    function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+            authorizeButton.style.display = 'none';
+            signoutButton.style.display = 'block';
+            listUpcomingEvents();
+
+        } else {
+            authorizeButton.style.display = 'block';
+            signoutButton.style.display = 'none';
+        }
+    }
+
+    /**
+     *  Sign in the user upon button click.
+     */
+    function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+    }
+
+    /**
+     *  Sign out the user upon button click.
+     */
+    function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+    }
+
+
+
+    /**
+     * Print the summary and start datetime/date of the next ten events in
+     * the authorized user's calendar. If no events are found an
+     * appropriate message is printed.
+     */
+    function listUpcomingEvents() {
+        gapi.client.calendar.events.list({
+            'calendarId': 'primary',
+            'timeMin': (new Date()).toISOString(),
+            'showDeleted': false,
+            'singleEvents': true,
+            'maxResults': 10,
+            'orderBy': 'startTime'
+        }).then(function (response) {
+            var events = response.result.items;
+
+            if (events.length > 0) {
+                FullCalendarList = [];
+                for (i = 0; i < events.length; i++) {
+                    var event = events[i];
+                    EventList.push(event); // its for future use its has a getting list.
+
+                    var data = {
+                        title: event.summary,
+                        start: event.start.dateTime,
+                        end: event.end.dateTime,
+                        url: event.htmlLink
+                    }
+                    FullCalendarList.push(data);
+                    console.log(event);
+                }
+
+                LoadFullCalendar(FullCalendarList);
+
+            } else {
+                alert('No upcoming events found.');
+                LoadFullCalendar(FullCalendarList);
+
+            }
+        });
+    }
+
+    //function AddGoogleEvents() {
+    //    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+    //    var event = {
+    //        "summary": "TechImplement 2018",
+    //        "location": "800 Howard St., San Francisco, CA 94103",
+    //        "kind": "calendar#calendar",
+    //        "description": "A chance to hear more about Google\'s developer products.",
+    //        "start": {
+    //            "dateTime": new Date(2018, 10, 18, 17, 00, 00),
+    //            "timeZone": "Asia/Karachi"
+    //        },
+    //        "end": {
+    //            "dateTime": new Date(2018, 10, 18, 18, 00, 00),
+    //            //"dateTime": "2018-11-11T10:00:00-07:00",
+    //            "timeZone": "Asia/Karachi"
+    //        },
+    //        //"recurrence": [
+    //        //    "RRULE:FREQ=DAILY;COUNT=2"
+    //        //],
+    //        "attendees": [
+    //            { "email": "aqil@techimplement.com" },
+    //            { "email": "pmo@techimplement.com" }
+    //        ],
+    //        "reminders": {
+    //            "useDefault": false,
+    //            "overrides": [
+    //                {
+    //                    "method": "email", "minutes": 24 * 60
+    //                },
+    //                { "method": "popup", "minutes": 10 }
+    //            ]
+    //        }
+    //    };
+    //    gapi.client.calendar.events.insert({
+    //        'calendarId': 'primary',
+    //        'resource': event
+    //    }).then(function (response) {
+    //        var events = response.result.items;
+    //        appendPre(response);
+    //        appendPre(events);
+    //        $('#content').html('');
+    //        listUpcomingEvents();
+    //    });
+    //}
+    //function appendPre(message) {
+    //    var pre = document.getElementById('content');
+    //    var textContent = document.createTextNode(message + '\n');
+    //    pre.appendChild(textContent);
+    //}
+
+
+
+
+
+</script>
+
+<script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload = function () { }; handleClientLoad();"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+</script>
+

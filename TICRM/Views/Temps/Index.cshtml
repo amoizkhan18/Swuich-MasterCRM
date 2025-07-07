@@ -1,0 +1,195 @@
+﻿@model IEnumerable<TICRM.DAL.Temp>
+
+@{
+    ViewBag.Title = "Sensor Data";
+}
+
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Firmware</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="@Url.Action("Index","Dashboard")" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-home"></i>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="@Url.Action("Index","Index")" class="m-nav__link">
+                        <span class="m-nav__link-text">Sensor</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- END: Subheader -->
+
+
+<div class="m-content">
+
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Sensor's Data
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+
+            </div>
+        </div>
+        <div class="m-portlet__body">
+
+            <!--begin: Datatable -->
+            <table class="table table-striped- table-bordered table-hover table-checkable" id="m_table_1">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Temeprature)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Humadity)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Temeprature)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Humadity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- END EXAMPLE TABLE PORTLET-->
+</div>
+
+
+
+@section scripts{
+
+    <script>
+
+        $('#m_table_1').DataTable({
+            responsive: false,
+            scrollY: false,
+            scrollX: true,
+            scrollCollapse: true,
+            //== Pagination settings
+            dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
+                                                                    <'row'<'col-sm-12'tr>>
+                                                                    <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+
+            buttons: [
+                'print',
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5',
+            ]
+        });
+
+
+
+
+        var LoadModalForDetails = function (id) {
+            // not remove this function because it use for open details of account form search click it use in easy auto complte funtion contact to development branch
+            // in master page use in EasyautoCompleteSearch
+
+            $('body').addClass('m-page--loading');
+
+            $.ajax({
+                type: "GET",
+                url: "/Accounts/AccountDetailsPartial",
+                data: { id: id },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+
+                    $('.modal-content').html('').html(response);
+                    $('#m_table_Assets').DataTable({
+                        columnDefs: [
+                            { "width": "10px", "targets": 0 },
+                            { "width": "40px", "targets": 1 },
+                            { "width": "100px", "targets": 2 },
+                            { "width": "70px", "targets": 3 },
+                            { "width": "70px", "targets": 4 },
+                            { "width": "70px", "targets": 5 },
+                            { "width": "70px", "targets": 6 },
+                            { "width": "70px", "targets": 7 },
+                            { "width": "70px", "targets": 8 }
+                        ]
+
+
+                    });
+
+                    $('#m_table_Location').DataTable({ scrollX: true });
+                    $('#m_table_Device').DataTable({ scrollX: true });
+
+                    $('#m_table_Oppertunity').DataTable({ scrollX: true });
+
+                    $('#m_modal_Details').modal('show');
+
+                    $('body').removeClass('m-page--loading');
+                },
+                failure: function () {
+                    alert("Failed!");
+                    $('body').removeClass('m-page--loading');
+                }
+            });
+        }
+
+        var LoadModalForDelete = function (id) {
+            // not remove this function because it use for open details of account form search click it use in easy auto complte funtion contact to development branch
+            // in master page use in EasyautoCompleteSearch
+
+            $('body').addClass('m-page--loading');
+
+            $.ajax({
+                type: "GET",
+                url: "/Accounts/PartialDeleteOnId",
+                data: { id: id },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+                    $('.modal-content').html('').html(response);
+
+                    $('#m_modal_Delete').modal('show');
+                    $('body').removeClass('m-page--loading');
+                },
+                failure: function () {
+                    alert("Failed!");
+                    $('body').removeClass('m-page--loading');
+                }
+            });
+        }
+
+
+    </script>
+}

@@ -1,0 +1,902 @@
+﻿@{
+    ViewBag.Title = "Devices";
+    //Layout = "~/Views/Shared/_IOTLayout.cshtml";
+}
+
+
+
+
+<style>
+    .slidecontainer {
+        width: 100%;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+    /*CardView*/
+    .container {
+        width: 385px;
+        height: 226px;
+        margin: 50px auto;
+    }
+
+    .card {
+        float: left;
+        width: 180px;
+        height: 100%;
+        border: 1px solid;
+        border-radius: 5px;
+        margin-right: 10px;
+        background: #F9F9F9;
+        position: relative;
+        box-shadow: 0px 0px 3px #ddd;
+    }
+
+        .card .inner {
+            background: #F9F9F9;
+            border: 1px solid #E3E3E3;
+            border-radius: 0px 0px 5px 5px;
+            width: 100%;
+            height: 100px;
+            position: absolute;
+            bottom: -1px;
+            left: -1px;
+            font-family: arial;
+            text-align: center;
+            box-shadow: inset 0px 0px 1px #FFF;
+        }
+
+            .card .inner .title {
+                display: block;
+                font-size: 16px;
+                color: #fff;
+                margin-top: -15px;
+            }
+
+                .card .inner .title .text {
+                    display: inline-block;
+                    padding: 5px 15px;
+                    border-radius: 50px;
+                    font-weight: bold;
+                }
+
+            .card .inner .number {
+                color: #313A3E;
+                font-size: 50px;
+                font-weight: bold;
+                display: block;
+                margin-top: 5px;
+            }
+
+            .card .inner .measure {
+                color: #676767;
+                font-size: 10px;
+                display: block;
+                margin-top: -10px;
+            }
+
+    .temp {
+        background: #EC6F69;
+        border: 1px solid #DE3932;
+    }
+
+        .temp .inner {
+            border-top: 1px solid #DE3932;
+        }
+
+            .temp .inner .text {
+                border: 1px solid #DE3932;
+                background: #EC6F69;
+                text-shadow: 1px 1px 0px #DE3932;
+            }
+
+            .temp .inner .icon {
+                display: block;
+                position: absolute;
+                top: -65px;
+                left: 75px;
+                width: 17px;
+                height: 17px;
+                background: #fff;
+                border-radius: 17px;
+                border: 4px solid #EC6F69;
+                box-shadow: 0 0 0 4px #fff, 1px 1px 0 4px #DE3932;
+            }
+
+                .temp .inner .icon:before {
+                    content: '';
+                    display: block;
+                    width: 7px;
+                    height: 25px;
+                    background: #fff;
+                    position: absolute;
+                    top: -30px;
+                    left: 0px;
+                    border: 5px solid #EC6F69;
+                    border-radius: 10px 10px 0px 0px;
+                    border-bottom: 0px none;
+                    box-shadow: 0 -4px 0 4px #fff, 4px -3px 0 1px #DE3932;
+                }
+
+            .temp .inner .icons {
+                display: block;
+                position: absolute;
+                top: -85px;
+                left: 70px;
+                width: 40px;
+                height: 40px;
+            }
+
+                .temp .inner .icons:before {
+                    content: '';
+                    display: block;
+                    width: 7px;
+                    height: 25px;
+                    position: absolute;
+                    top: -30px;
+                    left: 0px;
+                }
+
+    /*Thermometer*/
+
+    #wrapper {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    #info {
+        opacity: 0.2;
+        margin: 0;
+        text-align: center;
+    }
+
+    #termometer {
+        width: 25px;
+        background: #38383f;
+        height: 200px;
+        position: relative;
+        border: 9px solid #2a2a2e;
+        border-radius: 20px;
+        z-index: 1;
+        margin-bottom: 50px;
+    }
+
+        #termometer:before, #termometer:after {
+            position: absolute;
+            content: "";
+            border-radius: 50%;
+        }
+
+        #termometer:before {
+            width: 100%;
+            height: 34px;
+            bottom: 9px;
+            background: #38383f;
+            z-index: -1;
+        }
+
+        #termometer:after {
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: #3dcadf;
+            bottom: -41px;
+            border: 9px solid #2a2a2e;
+            z-index: -3;
+            left: 50%;
+        }
+
+        #termometer #graduations {
+            height: 59%;
+            top: 20%;
+            width: 50%;
+        }
+
+            #termometer #graduations, #termometer #graduations:before {
+                position: absolute;
+                border-top: 2px solid rgba(0, 0, 0, 0.5);
+                border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+            }
+
+                #termometer #graduations:before {
+                    content: "";
+                    height: 34%;
+                    width: 100%;
+                    top: 32%;
+                }
+
+        #termometer #temperature {
+            bottom: 0;
+            background: linear-gradient(#f17a65, #3dcadf) no-repeat bottom;
+            width: 100%;
+            border-radius: 20px;
+            background-size: 100% 240px;
+            transition: all 0.2s ease-in-out;
+        }
+
+            #termometer #temperature, #termometer #temperature:before, #termometer #temperature:after {
+                position: absolute;
+            }
+
+                #termometer #temperature:before {
+                    background: rgba(0, 0, 0, 0.7);
+                    color: white;
+                    z-index: 2;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    font-size: 1em;
+                    line-height: 1;
+                    transform: translateY(50%);
+                    left: calc(100% + 1em / 1.5);
+                    top: calc(-1em + 5px - 5px * 2);
+                }
+
+                #termometer #temperature:after {
+                    border-top: 0.4545454545em solid transparent;
+                    border-bottom: 0.4545454545em solid transparent;
+                    border-right: 0.6666666667em solid rgba(0, 0, 0, 0.7);
+                    left: 100%;
+                    top: calc(-1em / 2.2 + 5px);
+                }
+</style>
+
+
+<div onload="JavaScript:timedRefresh(5000);">
+    <!-- BEGIN: Subheader -->
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">Devices</h3>
+                <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                    <li class="m-nav__item m-nav__item--home">
+                        <a href="@Url.Action(" Index","Home")" class="m-nav__link m-nav__link--icon">
+                            <i class="m-nav__link-icon la la-home"></i>
+                        </a>
+                    </li>
+                    <li class="m-nav__separator">-</li>
+                    <li class="m-nav__item">
+                        <a href="@Url.Action(" Index","Devices")" class="m-nav__link">
+                            <span class="m-nav__link-text">Devices</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--Create Button-->
+            <div>
+                <a href="@Url.Action(" Create", "Devices" )" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air">
+                    <span>
+                        <i class="la la-plus"></i>
+                        <span>New Devices</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- END: Subheader -->
+    <div class="m-content">
+
+        <!--Begin::Section-->
+        <div class="row">
+
+            <div class="col-xl-6">
+                <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                    <div class="m-portlet__body">
+
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                <label id="deviceTitle">Value</label>
+                            </h3>
+                        </div>
+
+
+
+                        <img src="~/Content/Images/image.png" style="height:200px;" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-6">
+                <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+
+
+                    <div class="m-portlet__body">
+
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Communicate with Device
+                            </h3>
+                        </div>
+
+
+                        <form role="form">
+                            <div class="box-body">
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Select Command Type</label>
+
+                                    <select name="Device Command" id="commandDropDown" class="form-control">
+                                        <option value="Data Frequency">Data Frequency</option>
+                                        <option value="Set Service Due Date">Set Service Due Date</option>
+
+                                    </select>
+                                </div>
+                                <div class="form-group" id="mydatepicker">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input type='text' class="form-control" id="txtDate" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="dtFrequncy">
+                                    <label for="exampleInputEmail1">Select Data Frequency</label>
+
+                                    <select name="Device Command" id="txtValue" class="form-control">
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                        <option value="1500">1500</option>
+                                        <option value="2000">2000</option>
+                                        <option value="2500">2500</option>
+                                        <option value="3000">3000</option>
+                                        <option value="3500">3500</option>
+                                        <option value="4000">4000</option>
+                                    </select>
+                                </div>
+
+                            </div><!-- /.box-body -->
+                            <div class="box-footer">
+                                <button type="button" id="btnSendCommand" class="btn btn-primary">Send Command</button>
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--End::Section-->
+        <!--Begin::Section-->
+
+        <div class="row" id="HideAndShowLineChart">
+
+            <div class="col-xl-12">
+                <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    Devices Temprature
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="m-portlet__body">
+
+
+                        <div class="col-xs-12">
+                            <p class="text-center">
+                            </p>
+                            <div id="chartContainer" style="height: 370px; width:100%;"></div>
+                        </div>
+
+
+                        <div class="col-xs-12" style="display:none;">
+                            <p class="text-center">
+                            </p>
+
+                            <div class="chart-responsive">
+                                <div id="messages"></div>
+                            </div><!-- /.chart-responsive -->
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--End::Section-->
+        <!--Begin::Section-->
+
+        <div class="row" id="HideAndShowLightOnOff">
+
+            <div class="col-xl-12">
+                <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                    <div class="m-portlet__body">
+
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Device Light On/Off &nbsp;&nbsp;&nbsp;
+                            </h3>
+                        </div>
+
+
+                        <div class="col-xs-12">
+
+                            <div class="btn-group" id="toggle_event_editing">
+                                <button type="button" class="btn btn-info locked_active btn-lg">OFF</button>
+                                <button type="button" class="btn btn-default unlocked_inactive btn-lg">ON</button>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6" id="HideAndShowLightOnOff1">
+                                <i class="la la-lightbulb-o text-center" id="BulbOnOffId" style="font-size: 200px;width:400px;color: hsla(50, 0%, 50%, 1);display:block;"></i>
+                            </div>
+
+
+                            <div class="col-xs-6">
+                                <i class="fa fa-lightbulb-o text-center" id="BulbOnOffId" style="font-size: 400px;color: hsla(50, 0%, 50%, 1);display:block;"></i>
+                            </div>
+                            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                <img src="~/Content/Images/IOT Home.jpeg" style="width:500px;" />
+                            </div>
+
+                            @*<div id="switch_status">Switched off.</div>*@
+                        </div>
+                        <div class="col-xs-12" id="sliderHideAndShowOnLight">
+                            <hr />
+                            <div class="col-xs-2"></div>
+                            <div class="col-xs-8">
+                                <div class="slidecontainer">
+                                    <input type="range" min="1" max="100" value="100" class="slider" id="myRange">
+                                    <p>Value: <span id="myRangeValue"></span></p>
+                                </div>
+
+                            </div>
+                            <div class="col-xs-2"></div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--End::Section-->
+        <!--Begin::Section-->
+
+        <div class="row" id="HideAndShowMap">
+
+            <div class="col-xl-12">
+                <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                    <div class="m-portlet__body">
+
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                MAP &nbsp;&nbsp;&nbsp;
+                            </h3>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-center">
+
+                            </p>
+
+                            <style>
+                                #map {
+                                    width: 100%;
+                                    height: 300px;
+                                }
+                            </style>
+
+
+                            <div id="map"></div>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--End::Section-->
+        <!--Device Medical-->
+        <div class="row" id="HideAndShowMedical">
+            <div class="col-6">
+                <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                    <div class="m-portlet__body">
+
+
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Heart Beat
+                            </h3>
+                        </div>
+                        <span id="counterb" class="row"></span>
+                        <div class="row">
+                            <div style="float:left;width:45%; margin-top: 50px;">
+                                <img src="~/Content/Images/blood-pressure.png" style="width:200px; " />
+
+                            </div>
+
+                            <div style="float:right;width:45%;">
+                                <div class='container'>
+                                    <div class='card temp'>
+                                        <div class='inner'>
+                                            <img src="~/Content/Images/img_491812.png" class="icons" />
+
+                                            <div class='title'>
+                                                <div class='text'>Heart Beat</div>
+                                            </div>
+                                            <span class='number' id="heartbeatvalue"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                    <div class="m-portlet__body">
+
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Fever
+                            </h3>
+                        </div>
+                        <span id="counter" class="row"></span>
+                        <div class="row">
+                            @*<div class="col-4">
+                                    <img src="~/Content/Images/therm.png" style="width:200px; " />
+                                </div><br /><br /><br /><br /><br />*@
+                            @*<div class="col-8">
+                                    <span>Place your thumb on the sensor, while applying soft pressure</span><br /><br />
+                                    <span>Your Temprature is: </span><span id="feverValue"></span><br /><br />
+                                </div>*@
+                            <div style="float:left;width:45%; margin-top: 50px;">
+                                <div id="wrapper">
+                                    <div id="termometer">
+                                        <div id="temperature" style="height: 90%"></div>
+                                        <div id="graduations"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div style="float:right;width:45%;">
+                                <div class='container'>
+                                    <div class='card temp'>
+                                        <div class='inner'>
+                                            <div class='icon'></div>
+                                            <div class='title'>
+                                                <div class='text'>TEMPERATURE</div>
+                                            </div>
+                                            <span class='number' id="feverValue"></span>
+                                            @*<div class='measure'>FAHRENHEIT</div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+
+    <script src="~/Content/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <link href="~/Content/plugins/datepicker/datepicker3.css" rel="stylesheet" />
+    <script src="~/Content/canvasjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            GetGraphOfMAC();
+            $('#HideAndShowLineChart').hide();
+            $('#HideAndShowMap').hide();
+            //        $('#HideAndShowLightOnOff').hide();
+            $('#HideAndShowLightOnOff1').hide();
+            $('#HideAndShowLightOnOff2').hide();
+            $('#sliderHideAndShowOnLight').hide();
+            $('#HideAndShowMedical').hide();
+
+        });
+
+
+
+        function GetGraphOfMAC() {
+            $('#HideAndShowLightOnOff1').hide();
+            $('#HideAndShowLightOnOff2').hide();
+            $('#HideAndShowMedical').hide();
+            var MacAddress = localStorage.getItem('selectedDevice');
+
+            var obj = { MacAddress: MacAddress };
+            $.ajax({
+                type: "GET",
+                url: "/Devices/GetGraphOfMACData",
+                data: obj,
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].SensorName == "Temperature" && data[i].GraphName == "Line") {
+                            $('#HideAndShowLineChart').show();
+                        }
+
+                        if (data[i].SensorName == "Location" && data[i].GraphName == "Map") {
+                            $('#HideAndShowMap').show();
+                            var mapCanvas = document.getElementById('map');
+
+                            var myLatLng = { lat: data[i].Latitude, lng: data[i].Longitude };
+                            var mapOptions = {
+                                center: new google.maps.LatLng(data[i].Latitude, data[i].Longitude),
+                                zoom: 15,
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            }
+                            var map = new google.maps.Map(mapCanvas, mapOptions);
+                            var marker = new google.maps.Marker({
+                                position: myLatLng,
+                                map: map,
+                                title: data[i].Mac
+                            });
+                            google.maps.event.addDomListener(window, 'load');
+
+                        }
+                        if (data[i].SensorName == "Light" && data[i].GraphName == "On/Off") {
+                            $('#HideAndShowLightOnOff1').show();
+                            $('#HideAndShowLightOnOff2').show();
+                        }
+
+
+                        if (data[i].SensorName == "Heat rate / Fever" && data[i].GraphName == "Medical / Checkups") {
+
+                            $('#HideAndShowMedical').show();
+                        }
+
+
+                    }
+
+
+
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+        }
+
+
+        var dps = []; // dataPoints
+        var chart = new CanvasJS.Chart("chartContainer", {
+            title: {
+                text: "Live Temperature"
+            },
+            axisY: {
+                includeZero: false
+            },
+            data: [{
+                type: "line",
+                dataPoints: dps
+            }]
+        });
+
+        var xVal = 0;
+        var yVal = 100;
+        var updateInterval = 1000;
+        var dataLength = 20; // number of dataPoints visible at any point
+
+        var updateChart = function (Time, Temperature) {
+            dps.push({
+                x: Time,
+                y: Temperature
+            });
+            if (dps.length > dataLength) {
+                dps.shift();
+            }
+            chart.render();
+        };
+
+        $('#mydatepicker').hide();
+        $('#datetimepicker1').datepicker();
+
+        $("#commandDropDown").on('change', function () {
+            //$("#deviceTitle").text(localStorage.getItem('selectedDevice'));
+            if ($("#commandDropDown").val() == "Set Service Due Date") {
+
+                $('#mydatepicker').show();
+                $('#dtFrequncy').hide();
+                $('#btnSendCommand').text('Save Service Date');
+            }
+            else {
+                $('#mydatepicker').hide();
+                $("#datetimepicker1").val("");
+                $('#dtFrequncy').show();
+                $('#btnSendCommand').text('Send Command');
+            }
+        });
+
+        $("#deviceTitle").text(localStorage.getItem('selectedDevice'));
+
+    </script>
+
+    <script>
+        $('#toggle_event_editing button').click(function () {
+
+            var IsDeviceOn = false;
+
+            if ($(this).hasClass('locked_active') || $(this).hasClass('unlocked_inactive')) {
+                /* code to do when unlocking */
+                $('#switch_status').html('Switched on.');
+                console.log("Switched on.")
+                $('#BulbOnOffId').removeAttr('style');
+                $('#BulbOnOffId').attr('style', "font-size: 400px;color: hsla(50, 100%, 50%, 1);display:block;");
+                $('#sliderHideAndShowOnLight').show();
+                IsDeviceOn = true;
+            } else {
+                /* code to do when locking */
+                $('#switch_status').html('Switched off.');
+                console.log("Switched Off.")
+                $('#BulbOnOffId').removeAttr('style');
+                $('#BulbOnOffId').attr('style', "font-size: 400px;color: hsla(50, 0%, 50%, 1);display:block;");
+                $('#sliderHideAndShowOnLight').hide();
+                IsDeviceOn = false;
+            }
+
+            /* reverse locking status */
+            $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-default btn-info');
+            $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-info btn-default');
+
+
+
+
+            var obj = { deviceStatus: IsDeviceOn };
+            $.ajax({
+                type: "POST",
+                url: "/Devices/SendMessageToMqtt",
+                data: obj,
+                dataType: "text",
+                success: function (response) {
+                    if (response == "error") {
+                        ("Failed to update on mqtt.");
+                    }
+                    else {
+                        alert("Failed to update on mqtt.");
+                    }
+
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+
+
+        });
+    </script>
+
+
+    <script>
+    $(document).ready(function () {
+        //  $('#example1').dataTable();
+        $('#searchNavigationList').append('<li><a href="/Devices/Index">Devices</a></li>');
+        $('#searchNavigationList').append('<li><a href="@Url.Action("device", "Devices")">' + localStorage.getItem('selectedDevice') + '</a></li>');
+    });
+    </script>   
+
+
+    <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("myRangeValue");
+        var slidevalue = slider.value;
+        output.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            $('#BulbOnOffId').attr('style', "font-size: 400px;color: hsla(50, " + this.value + "%, 50%, 1);display:block;");
+            output.innerHTML = this.value;
+            slidevalue = this.value;
+            var obj = { silderValue: slidevalue };
+            $.ajax({
+                type: "POST",
+                url: "/Devices/SendMessageToMqtts",
+                data: obj,
+                success: function (response) {
+                    if (response == "error") {
+                        ("Failed to update on mqtt.");
+                    }
+                    else {
+                        alert("Failed to update on mqtt.");
+                    }
+
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+        }
+        
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

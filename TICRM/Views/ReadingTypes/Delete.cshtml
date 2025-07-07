@@ -1,0 +1,45 @@
+﻿@model TICRM.DAL.ReadingType
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutTICRM.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ReadingType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Reading Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
+
+
+<script src="~/Content/plugins/jQuery/jQuery-2.1.3.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#searchNavigationList').append('<li><a href="/ReadingTypes">Reading Types</a></li>');
+        $('#searchNavigationList').append('<li><a href="@Url.Action("Delete", "ReadingTypes", new { id = Model.ReadingTypeId })">Delete @Model.Name</a></li>');
+    });
+</script>
+

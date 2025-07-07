@@ -1,0 +1,101 @@
+﻿@model TICRM.DTOs.AlertDto
+
+
+
+<div class="m-portlet m-portlet--tabs">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs-line m-tabs-line--success m-tabs-line--2x" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active show" data-toggle="tab" href="#m_portlet_tab_Alerts" role="tab" aria-selected="true">
+                        <i class="la la-user-md"></i> Alerts
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        <div class="tab-content">
+            <div class="tab-pane active show" id="m_portlet_tab_Alerts" role="tabpanel">
+
+                <div class="row container">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Title)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt>
+                            Status
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Status.Name)
+                        </dd>
+                        <dt>
+                            Assigned Team
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Team.Name)
+                        </dd>
+                        <dt>
+                            Urgency
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Urgency.Name)
+                        </dd>
+                        <dt>
+                            Assigned User
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.User.Name)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="clearfix">
+                    <hr />
+                </div>
+              
+                @using (Html.BeginForm("Delete/" + Model.AlertId, "Alerts", FormMethod.Post, new { id = "DeleteForm" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <button type="button" id="deletebtn" onclick="Delete_Record()" class="btn btn-success"> Confirm</button>
+                        <button type="button" onclick="$('#m_modal_Delete').modal('hide');" class="btn btn-secondary"><i class="la la-refresh"></i> Cancel</button>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+    var Delete_Record = function () {
+        $('body').addClass('m-page--loading');
+        $('#DeleteForm').submit();
+    }
+
+</script>
+
+
+
+
+

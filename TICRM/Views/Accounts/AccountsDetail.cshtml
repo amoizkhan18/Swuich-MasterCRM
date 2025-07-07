@@ -1,0 +1,1394 @@
+﻿@model TICRM.DTOs.AccountViewModel
+@{
+    ViewBag.Title = "AccountsDetail";
+}
+
+
+<style>
+    html, body {
+        font-size: 12px;
+    }
+
+    .m-body .m-content {
+        padding: 0 0 0 0 !important;
+    }
+
+    .row {
+        margin-top: 0px;
+        margin-bottom: -10px;
+    }
+
+    .m-body .m-wrapper {
+        padding: 7px !important;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    #m_table_Assets {
+        min-height: 125px !important;
+        max-height: auto !important;
+    }
+
+    .test:after {
+        content: "\2807";
+        font-size: 1.5em;
+        color: #2e2e2e;
+    }
+
+
+    /*#m_table_Oppertunity {
+        max-height: auto !important;
+        min-height: 125px !important;
+    }*/
+
+    .jstree-anchor {
+        width: 90% !important;
+    }
+
+</style>
+
+<style>
+    .slidecontainer {
+        width: 100%;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+</style>
+
+
+
+@* Left pannel triggering *@
+
+
+
+
+
+
+<div class="m-content">
+
+
+    <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--1st Row-->
+    <!--Begin::Section-->
+    <div class="row">
+        <div class="col-xl-12 ">
+            <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+
+                <div class="m-portlet__body">
+
+
+
+                    <div class="m-portlet__head-title" style="height:25px;">
+                        <h3 class="m-portlet__head-text">
+                            <label>@Model.account.Name - Account Summary</label>
+                        </h3>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-3 col-lg-3 col-sm-3 col-md-3">
+
+                            @if (@Model.account.AccountType != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-briefcase" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.AccountType.Name</h5>
+                                </blockquote>
+                            }
+                            @if (@Model.account.AccountSize != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-users" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span>@Model.account.AccountSize.Name</h5>
+                                </blockquote>
+                            }
+                            @if (@Model.account.Status != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-circle" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.Status.Name</h5>
+                                </blockquote>
+                            }
+                        </div>
+
+                        <div class="col-3 col-lg-3 col-sm-3 col-md-3">
+                            <blockquote class="blockquote">
+
+                                <h5 class="mb-0"><span class="fa fa-envelope" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.Email</h5>
+                            </blockquote>
+                            <blockquote class="blockquote">
+                                <h5 class="mb-0"><span class="fa fa-fax" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.Fax</h5>
+                            </blockquote>
+                            <blockquote class="blockquote">
+                                <h5 class="mb-0"><span class="fa fa-phone" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.PhoneOffice</h5>
+                            </blockquote>
+
+
+                        </div>
+
+                        <div class="col-3 col-lg-3 col-sm-3 col-md-3">
+                            <blockquote class="blockquote">
+                                <h5 class="mb-0"><span class="fa fa-globe" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.WebSite</h5>
+                            </blockquote>
+                            @if (@Model.account.Address != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-location-arrow" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span>@Model.account.Address.City</h5>
+                                </blockquote>
+                            }
+                            @if (@Model.account.Address1 != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-file-invoice-dollar" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.Address1.City</h5>
+                                </blockquote>
+                            }
+                        </div>
+
+                        <div class="col-3 col-lg-3 col-sm-3 col-md-3">
+
+                            @if (@Model.account.Industry != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-industry" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.Industry.Name</h5>
+                                </blockquote>
+                            }
+                            @if (@Model.account.Team != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-child" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.Team.Name</h5>
+                                </blockquote>
+                            }
+                            @if (@Model.account.User != null)
+                            {
+                                <blockquote class="blockquote">
+                                    <h5 class="mb-0"><span class="fa fa-user" style='margin-right:.50em; display:inline-block;color:#5867dd;'>&nbsp;</span> @Model.account.User.Name</h5>
+                                </blockquote>
+                            }
+                        </div>
+
+                    </div>
+
+                    @*<table id="m_table_Account" class="table table-striped table-bordered table-hover table-checkable">
+                            <thead>
+                                <tr>
+                                    <th>Account Name</th>
+                                    @if (@Model.account.AccountSize != null)
+                                    {
+                                        <th>AccountSize</th>
+                                    }
+                                    @if (@Model.account.AccountType != null)
+                                    {
+                                        <th>AccountType</th>
+                                    }
+                                    @if (@Model.account.Address != null)
+                                    {
+                                        <th>Billing Address</th>
+                                    }
+                                    @if (@Model.account.Address1 != null)
+                                    {
+                                        <th>Shipping Address</th>
+                                    }
+
+                                    <th>Email</th>
+                                    <th>Fax</th>
+                                    <th>WebSite</th>
+
+                                    @if (@Model.account.Industry != null)
+                                    {
+                                        <th>Industry</th>
+                                    }
+                                    <th>PhoneOffice</th>
+                                    @if (@Model.account.Status != null)
+                                    {
+                                        <th>Status</th>
+                                    }
+                                    @if (@Model.account.Team != null)
+                                    {
+                                        <th>Team</th>
+                                    }
+                                    @if (@Model.account.User != null)
+                                    {
+                                        <th>User</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Model.account.Name</td>
+                                    @if (@Model.account.AccountSize != null)
+                                    {
+                                        <td>@Model.account.AccountSize.Name</td>
+                                    }
+                                    @if (@Model.account.AccountType != null)
+                                    {
+                                        <td>@Model.account.AccountType.Name</td>
+                                    }
+                                    @if (@Model.account.Address != null)
+                                    {
+                                        <td>@Model.account.Address.Street1</td>
+                                    }
+                                    @if (@Model.account.Address1 != null)
+                                    {
+                                        <td>@Model.account.Address1.Street1</td>
+                                    }
+                                    <td>@Model.account.Email</td>
+                                    <td>@Model.account.Fax</td>
+                                    <td>@Model.account.WebSite</td>
+                                    @if (@Model.account.Industry != null)
+                                    {
+                                        <td>@Model.account.Industry.Name</td>
+                                    }
+                                    <td>@Model.account.PhoneOffice</td>
+                                    @if (@Model.account.Status != null)
+                                    {
+                                        <td>@Model.account.Status.Name</td>
+                                    }
+                                    @if (@Model.account.Team != null)
+                                    {
+                                        <td>@Model.account.Team.Name</td>
+                                    }
+                                    @if (@Model.account.User != null)
+                                    {
+                                        <td>@Model.account.User.Name</td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>*@
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <!--End::Section-->
+    <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--2st Row-->
+    <!--Begin::Section-->
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                <div class="m-portlet__body">
+
+                    <div class="m-portlet__head-title" style="height:25px;">
+                        <h5 class="m-portlet__head-text">
+                            <label>Opportunity</label>
+                        </h5>
+                    </div>
+
+                    @*<table class="m-datatable__table" id="m_table_Oppertunity">*@
+                    <!--Section content-->
+                    <table class="table table-striped- table-bordered table-hover " id="tableMain">
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                @*<th>Currency</th>
+                                    <th>Team</th>
+                                    <th>User</th>
+                                    <th>Stage</th>
+                                    <th>Probability</th>
+                                    <th>Status</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.accountOppertunities)
+                            {
+                                <tr class="breakrow" onclick="showData()">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        <a href="javascript:LoadOppertunityOnId('@item.OpportunityId');">@item.Title</a>
+                                        @*@Html.ActionLink(item.Title, "Edit", new { id = item.OpportunityId })*@
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+
+                                </tr>
+
+                                @*<tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Amount)
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink(item.Title, "Edit", new { id = item.OpportunityId })
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Currency.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Team.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.User.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OpportunityStage.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Pobability.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Status.Name)
+                                        </td>
+                                    </tr>*@
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="m-portlet__body">
+
+                    <div class="m-portlet__head-title" style="height:25px;">
+                        <h5 class="m-portlet__head-text">
+                            <label>Upcoming Services</label>
+                        </h5>
+                    </div>
+
+
+                    <table class="table table-striped- table-bordered table-hover table-checkable display nowrap" id="m_table_ServicesDevice">
+                        <thead>
+                            <tr>
+                                <th>EMEINumber</th>
+                                <th>Name</th>
+                                <th>Mac</th>
+                                <th>RegistrationDate</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Status</th>
+                                <th>Assigned Team</th>
+                                <th>Assigned User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.accountDevices.Where(x => x.Maintenance == "IsServiced").ToList())
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EMEINumber)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(item.Name, "Edit", "Devices", new { id = item.DeviceId }, null)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Mac)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Latitude)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Longitude)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Team.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.User.Name)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="m-portlet__body">
+
+                    <div class="m-portlet__head-title" style="height:25px;">
+                        <h5 class="m-portlet__head-text">
+                            <label>Repair Devices</label>
+                        </h5>
+                    </div>
+
+                    <table class="table table-striped- table-bordered table-hover table-checkable display nowrap" id="m_table_RepairedDevice">
+                        <thead>
+                            <tr>
+                                <th>EMEINumber</th>
+                                <th>Name</th>
+                                <th>Mac</th>
+                                <th>RegistrationDate</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Status</th>
+                                <th>Assigned Team</th>
+                                <th>Assigned User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.accountDevices.Where(x => x.Maintenance == "IsRepaired").ToList())
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EMEINumber)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(item.Name, "Edit", "Devices", new { id = item.DeviceId }, null)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Mac)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Latitude)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Longitude)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Team.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.User.Name)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-4">
+            <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+                <div class="m-portlet__body">
+                    <div class="m-portlet__head-title" style="height:25px;">
+                        <h5 class="m-portlet__head-text">
+                            Location - Devices
+                        </h5>
+                    </div>
+
+
+                    <div id="jstree1" style="height: 450px; overflow-y: scroll;">
+                        <!-- in this example the tree is populated from inline HTML -->
+
+
+                        <ul>
+                            @foreach (var item in Model.accountLocations)
+                            {
+                                <li macaddress="" deviceId="" data-jstree="selected: true">
+                                    @item.Name
+                                    <ul>
+                                        @foreach (var Assetitem in Model.accountAssetes.Where(x => x.LocationId == item.LocationId))
+                                        {
+                                            <li macaddress="" deviceId="" data-jstree="type:file">
+                                                @Assetitem.Title
+
+                                                <ul>
+                                                    @foreach (var deviceitem in Model.accountDevices.Where(x => x.CustomerAssetId == Assetitem.CustomerAssetId))
+                                                    {
+
+                                                        <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="type:file" style="width:100px">
+
+                                                            <span onclick="MapRightSlider();">
+                                                                @deviceitem.Name
+                                                            </span>
+
+                                                            @*<div class="w3-dropdown-hover">
+                                                                    <span class="test" style="padding-left:20px"></span>
+                                                                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                                                                        <a href="#" class="w3-bar-item w3-button">Link 1</a>
+                                                                        <a href="#" class="w3-bar-item w3-button">Link 2</a>
+                                                                        <a href="#" class="w3-bar-item w3-button">Link 3</a>
+                                                                    </div>
+                                                                </div>*@
+                                                            <div class="btn-group" style="float:right;">
+                                                                <div class="dropleft" role="group">
+                                                                    <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <span class="test" style='margin-right:.50em; display:inline-block;'></span>
+                                                                    </span>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="#" onclick="ToConfirm('@deviceitem.Mac' , '@deviceitem.Name' , '@deviceitem.Latitude' , '@deviceitem.Longitude');">Firmware Update</a>
+                                                                        <a class="dropdown-item" href="#" onclick="deviceGraph('@deviceitem.Mac');">View Graphs</a>
+                                                                        <a class="dropdown-item" href="#" onclick="notifyDirect();">Notifications</a>
+                                                                        <a class="dropdown-item" href="#" onclick="workflowConfrim()">Workflow</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <ul>
+                                                                <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="type:file">
+                                                                    Mac
+                                                                    <ul>
+                                                                        <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="disabled: true">
+                                                                            <a href="#"
+                                                                               onclick="ToConfirm('@deviceitem.Mac');">
+                                                                                @deviceitem.Mac
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="type:file">
+                                                                    EMEINumber
+                                                                    <ul>
+                                                                        <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="disabled: true">@deviceitem.EMEINumber</li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="type:file">
+                                                                    Latitude
+                                                                    <ul>
+                                                                        <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="disabled: true">@deviceitem.Latitude </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="type:file">
+                                                                    Longitude
+                                                                    <ul>
+                                                                        <li macaddress="@deviceitem.Mac" deviceId="@deviceitem.DeviceId" data-jstree="disabled: true">@deviceitem.Longitude </li>
+                                                                    </ul>
+                                                                </li>
+
+                                                            </ul>
+                                                        </li>
+
+                                                    }
+                                                </ul>
+
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+
+                            }
+                        </ul>
+
+
+                    </div>
+
+                    <div class="modal" id="confirmModal" tabindex="-1">
+                        <div class=" modal-dialog">
+                            <div class=" modal-content">
+                                <div class=" modal-header">
+                                    <h6 class="modal-title">Update Firmware</h6>
+                                    <button class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <span>The process can not be reverted. Are You Sure to Proceed?</span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary">Confirm</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--End::Section-->
+    <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+</div>
+
+<!-- Start:Map Right Slider Modal -->
+<div class="modal fade modal-MapRightSlider-fade" id="MapRightSliderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-MapRightSlider-dialog modal-MapRightSlider-slideout" role="document">
+        <div class="modal-content modal-content-MapRightSlider">
+            <div class="modal-header modal-header-MapRightSlider">
+                <h5 class="modal-header-title" id="exampleModalLabel">Location - Devices</h5>
+                <button type="button" class="close modalMapRightSliderClose" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-MapRightSlider">
+
+                <div id="HideAndShowMap" style="padding-bottom:15px;">
+
+                    <style>
+                        #map {
+                            width: 100%;
+                            height: 250px;
+                        }
+                    </style>
+                    <div id="map"></div>
+
+                </div>
+
+                <div id="HideAndShowLightOnOff1" style="text-align: center;padding-bottom: 15px;">
+
+                    <div class="col-xs-12">
+                        <div class="btn-group" id="toggle_event_editing">
+                            <span style="font-size:20px;padding-top:5px;">Lights &nbsp;&nbsp;</span>
+                            <button type="button" class="btn btn-info locked_active m-btn--md">OFF</button>
+                            <button type="button" class="btn btn-default unlocked_inactive m-btn--md">ON</button>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <i class="la la-lightbulb-o text-center" id="BulbOnOffId" style="font-size: 200px;color: hsla(50, 0%, 50%, 1);display:block;"></i>
+                    <div class="col-xs-12" id="sliderHideAndShowOnLight">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <div class="slidecontainer">
+                                <input type="range" min="1" max="100" value="100" class="slider" id="myRange">
+                                <p>Value: <span id="myRangeValue"></span></p>
+                            </div>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <hr />
+                </div>
+
+                <div id="HideAndShowLightOnOff2" style="text-align: center;padding-bottom: 15px;">
+                    <img src="~/Content/Images/IOT Home.jpeg" style="width:200px;" />
+                    <hr />
+                </div>
+
+                <div id="HideAndShowMedical" style="text-align: center;padding-bottom: 15px;">
+                    <img src="~/Content/Images/blood-pressure.png" style="width:200px;" />
+                    <hr />
+                </div>
+
+                <div id="HideAndShowLineChart" style="margin-bottom:15px;">
+                    <div class="col-xs-12">
+                        <p class="text-center">
+                        </p>
+                        <div id="chartContainer" style="height: 200px; width:100%;"></div>
+                    </div>
+                    <div class="col-xs-12" style="display:none;">
+                        <p class="text-center"></p>
+                        <div class="chart-responsive">
+                            <div id="messages"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer modal-MapRightSlider-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End:Map Right Slider Modal -->
+
+@section scripts{
+
+    <script>
+
+        var append_treeView_Id = 0;
+
+        var AccountDetailMacAddress = "";
+
+        var AccountDetialDeviceId = "";
+
+
+        var showModal = function () {
+
+            $('#confirmModal').modal('show');
+        }
+
+        $(document).ready(function () {
+
+            $(function () {
+
+                $('#jstree1').on('changed.jstree', function (e, data) {
+                    var objNode = data.instance.get_node(data.selected);
+
+                    //$('#jstree-result').html('Selected: <br/><strong>' + objNode.id + '-' + objNode.text + '-' + objNode.li_attr + '</strong>');
+
+                    console.log(objNode.li_attr);
+
+                    if (objNode == false) { return false; }
+
+                    if (objNode.li_attr.deviceid != undefined && objNode.li_attr.deviceid != AccountDetialDeviceId) {
+                        AccountDetialDeviceId = objNode.li_attr.deviceid;
+                        LoadDeviceSensorGraph(objNode.li_attr.deviceid);
+                    }
+
+                    if (objNode.li_attr.macaddress != undefined && objNode.li_attr.deviceid != "" && objNode.li_attr.macaddress != AccountDetailMacAddress) {
+                        AccountDetailMacAddress = objNode.li_attr.macaddress;
+                        localStorage.setItem('selectedDevice', objNode.li_attr.macaddress);
+                        GetGraphOfMAC();
+                    }
+                }).jstree({
+                    "core": {
+                        "multiple": true,
+                        "check_callback": true,
+                        'themes': {
+                            "responsive": true,
+                            'variant': 'larg',
+                            'stripes': false,
+                            'dots': false
+                        }
+                    },
+                    "types": {
+                        "default": {
+                            "icon": "fa fa-folder icon-state-warning icon-lg m--font-brand"
+                        },
+                        "file": {
+                            "icon": "fa fa-file icon-state-warning icon-lg"
+                        }
+                    },
+                    "plugins": ["dnd", "state", "types", "sort"]
+                });
+
+            });
+
+        });
+
+        var LoadOppertunityOnId = function (id) {
+            $('body').addClass('m-page--loading');
+
+            $.ajax({
+                type: "GET",
+                url: "/Accounts/GetOppertunityDetailOnId",
+                data: { id: id },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+                    $('.modal-content-rightside').html('').html(response);
+
+                    $('#RightSideModal').modal('show');
+                    $('body').removeClass('m-page--loading');
+                },
+                failure: function () {
+                    alert("Failed!");
+                    $('body').removeClass('m-page--loading');
+                }
+            });
+        }
+
+        var LoadDeviceSensorGraph = function (deviceId) {
+
+            if (deviceId == "undefined") {
+                return false;
+            }
+
+            var obj = { deviceId: deviceId };
+
+            $.ajax({
+                type: "GET",
+                url: "/Devices/DSGonDeviceId",
+                data: obj,
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+
+                    console.log(response);
+
+                    var data = JSON.parse(response);
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].SensorName == "Temperature") {
+
+                        }
+                        else if (data[i].SensorName == "Location") {
+
+                        }
+                        else if (data[i].SensorName == "Light") {
+
+                        }
+                    }
+
+
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+
+
+            $('#m_table_Account').DataTable({
+                responsive: true,
+                "bPaginate": false,
+                "bFilter": false,
+                "bInfo": false
+            });
+
+            $('#m_table_RepairedDevice').DataTable({
+                responsive: true,
+                "bPaginate": true,
+                "bFilter": false,
+                "bInfo": false,
+                "pageLength": 2,
+                "lengthChange": false,
+                "lengthMenu": [[1, 2, 5, -1], [1, 2, 5, "All"]]
+            });
+
+            $('#m_table_ServicesDevice').DataTable({
+                responsive: true,
+                "bPaginate": true,
+                "bFilter": false,
+                "bInfo": false,
+                "lengthChange": false,
+                "pageLength": 2,
+                "lengthMenu": [[1, 2, 5, -1], [1, 2, 5, "All"]]
+            });
+
+            $('#m_table_Oppertunity').DataTable({
+                responsive: true,
+                "bPaginate": true,
+                "bFilter": false,
+                "bInfo": false,
+                "lengthChange": false,
+                "pageLength": 1,
+                "lengthMenu": [[1, 2, 5, -1], [1, 2, 5, "All"]]
+            });
+
+
+            //$('#m_table_Oppertunity').mDatatable({
+            //    data: {
+            //        pageSize: 1,
+            //        saveState: {
+            //            cookie: false,
+            //            webstorage: true
+            //        },
+            //        serverPaging: false,
+            //        serverFiltering: false,
+            //        serverSorting: false
+            //    },
+            //    layout: {
+            //        theme: 'default',
+            //        class: 'responsive',
+            //        scroll: true,
+            //        //height: 200,
+            //        footer: false
+            //    },
+            //    toolbar: {
+            //        items: {
+            //            // pagination
+            //            pagination: {
+            //                // page size select
+            //                pageSizeSelect: [1, 2, 3, 4, 5, 1]
+            //            }
+            //        }
+            //    },
+            //    sortable: true,
+            //    filterable: false,
+            //    pagination: true
+            //});
+
+            $("#m_tree_4").jstree({
+                "core": {
+                    "themes": {
+                        "responsive": false
+                    },
+                    // so that create works
+                    "check_callback": true,
+                    'data': [{
+                        "text": "Parent Node",
+                        "children": [{
+                            "text": "Initially selected",
+                            "state": {
+                                "selected": true
+                            }
+                        }, {
+                            "text": "Custom Icon",
+                            "icon": "fa fa-warning m--font-danger"
+                        }, {
+                            "text": "Initially open",
+                            "icon": "fa fa-folder m--font-success",
+                            "state": {
+                                "opened": true
+                            },
+                            "children": [
+                                { "text": "Another node", "icon": "fa fa-file m--font-waring" }
+                            ]
+                        }, {
+                            "text": "Another Custom Icon",
+                            "icon": "fa fa-warning m--font-waring"
+                        }, {
+                            "text": "Disabled Node",
+                            "icon": "fa fa-check m--font-success",
+                            "state": {
+                                "disabled": true
+                            }
+                        }, {
+                            "text": "Sub Nodes",
+                            "icon": "fa fa-folder m--font-danger",
+                            "children": [
+                                { "text": "Item 1", "icon": "fa fa-file m--font-waring" },
+                                { "text": "Item 2", "icon": "fa fa-file m--font-success" },
+                                { "text": "Item 3", "icon": "fa fa-file m--font-default" },
+                                { "text": "Item 4", "icon": "fa fa-file m--font-danger" },
+                                { "text": "Item 5", "icon": "fa fa-file m--font-info" }
+                            ]
+                        }]
+                    },
+                        "Another Node"
+                    ]
+                },
+                "types": {
+                    "default": {
+                        "icon": "fa fa-folder m--font-brand"
+                    },
+                    "file": {
+                        "icon": "fa fa-file  m--font-brand"
+                    }
+                },
+                "state": { "key": "demo2" },
+                "plugins": ["contextmenu", "state", "types"]
+            });
+
+            $('#m_table_Device').DataTable({ scrollX: true });
+
+        });
+
+        var ToConfirm = function (value, name, lat, long) {
+            //if (confirm('Are you Sure?')) { window.location = '/Firmwares/Create'; }
+            var value
+            var name
+            var lat
+            var long
+            var location = lat + ',' + long;
+            if (confirm('Are you Sure?')) { window.location = '/Firmwares/Create?MacAddress=' + value + '&devicename=' + name + '&location=' + location; }
+        }
+
+        var workflowConfrim = function () {
+            window.location = '/WorkFlows/Index';
+        }
+
+        var notifyDirect = function () {
+            window.location = '/eventNotifications/index';
+        }
+
+        var deviceGraph = function (value) {
+            localStorage.setItem('selectedDevice', value);
+            SaveMacAddress(value);
+            window.location = '/Devices/device';
+        }
+
+
+        var MapRightSlider = function () {
+            $('#MapRightSliderModal').modal('show');
+        }
+
+
+    </script>
+
+    <script src="~/Content/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <link href="~/Content/plugins/datepicker/datepicker3.css" rel="stylesheet" />
+    <script src="~/Content/canvasjs.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            //collapse and expand sections
+            //$('.breakrow').click(function(){
+            $('#tableMain').on('click', 'tr.breakrow', function () {
+                $(this).nextUntil('tr.breakrow').slideToggle(200);
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#HideAndShowLineChart').hide();
+            $('#HideAndShowMap').hide();
+            $('#HideAndShowLightOnOff1').hide();
+            $('#HideAndShowLightOnOff2').hide();
+            $('#HideAndShowMedical').hide();
+        });
+
+        function GetGraphOfMAC() {
+
+            var MacAddress = localStorage.getItem('selectedDevice');
+
+            $('#HideAndShowLineChart').hide();
+            $('#HideAndShowMap').hide();
+            $('#HideAndShowLightOnOff1').hide();
+            $('#HideAndShowLightOnOff2').hide();
+            $('#HideAndShowMedical').hide();
+
+
+            var obj = { MacAddress: MacAddress };
+            $.ajax({
+                type: "GET",
+                url: "/Devices/GetGraphOfMACData",
+                data: obj,
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].SensorName == "Temperature" && data[i].GraphName == "Line") {
+                            $('#HideAndShowLineChart').show();
+                        }
+                        if (data[i].SensorName == "Location" && data[i].GraphName == "Map") {
+                            $('#HideAndShowMap').show();
+                            var mapCanvas = document.getElementById('map');
+                            var directionsDisplay;
+                            var directionsService = new google.maps.DirectionsService();
+                            var map;
+                            var myLatLng = { lat: data[i].Latitude, lng: data[i].Longitude };
+
+                            var styledMapType = new google.maps.StyledMapType(
+                                [
+                                    {
+                                        "featureType": "all",
+                                        "elementType": "geometry",
+                                        "stylers": [
+                                            {
+                                                "color": "#202c3e"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "all",
+                                        "elementType": "labels.text.fill",
+                                        "stylers": [
+                                            {
+                                                "gamma": 0.01
+                                            },
+                                            {
+                                                "lightness": 20
+                                            },
+                                            {
+                                                "weight": "1.39"
+                                            },
+                                            {
+                                                "color": "#ffffff"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "all",
+                                        "elementType": "labels.text.stroke",
+                                        "stylers": [
+                                            {
+                                                "weight": "0.96"
+                                            },
+                                            {
+                                                "saturation": "9"
+                                            },
+                                            {
+                                                "visibility": "on"
+                                            },
+                                            {
+                                                "color": "#000000"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "all",
+                                        "elementType": "labels.icon",
+                                        "stylers": [
+                                            {
+                                                "visibility": "off"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "landscape",
+                                        "elementType": "geometry",
+                                        "stylers": [
+                                            {
+                                                "lightness": 30
+                                            },
+                                            {
+                                                "saturation": "9"
+                                            },
+                                            {
+                                                "color": "#29446b"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "poi",
+                                        "elementType": "geometry",
+                                        "stylers": [
+                                            {
+                                                "saturation": 20
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "poi.park",
+                                        "elementType": "geometry",
+                                        "stylers": [
+                                            {
+                                                "lightness": 20
+                                            },
+                                            {
+                                                "saturation": -20
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "road",
+                                        "elementType": "geometry",
+                                        "stylers": [
+                                            {
+                                                "lightness": 10
+                                            },
+                                            {
+                                                "saturation": -30
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "road",
+                                        "elementType": "geometry.fill",
+                                        "stylers": [
+                                            {
+                                                "color": "#193a55"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "road",
+                                        "elementType": "geometry.stroke",
+                                        "stylers": [
+                                            {
+                                                "saturation": 25
+                                            },
+                                            {
+                                                "lightness": 25
+                                            },
+                                            {
+                                                "weight": "0.01"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "featureType": "water",
+                                        "elementType": "all",
+                                        "stylers": [
+                                            {
+                                                "lightness": -20
+                                            }
+                                        ]
+                                    }
+                                ],
+                                { name: 'Styled Map' });
+
+                            var mapOptions = {
+
+                                center: new google.maps.LatLng(data[i].Latitude, data[i].Longitude),
+                                zoom: 15,
+                                mapTypeControlOptions: {
+                                    mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                                        'styled_map']
+                                }
+                            }
+                            var map = new google.maps.Map(mapCanvas, mapOptions);
+                            map.mapTypes.set('styled_map', styledMapType);
+                            //map.setMapTypeId('styled_map');
+                            var marker = new google.maps.Marker({
+                                position: myLatLng,
+                                map: map,
+                                title: data[i].Mac
+                            });
+                            google.maps.event.addDomListener(window, 'load');
+                        }
+                        if (data[i].SensorName == "Light" && data[i].GraphName == "On/Off") {
+                            $('#HideAndShowLightOnOff1').show();
+                            $('#HideAndShowLightOnOff2').show();
+                            ResetBlobSliderValue();
+                        }
+                        if (data[i].SensorName == "Heat rate / Fever" && data[i].GraphName == "Medical / Checkups") {
+
+                            $('#HideAndShowMedical').show();
+                        }
+                    }
+                },
+                failure: function () {
+                    alert("Failed!");
+                    $('body').removeClass('m-page--loading');
+                }
+            });
+        }
+
+        var dps = []; // dataPoints
+        var chart = new CanvasJS.Chart("chartContainer", {
+            title: {
+                text: "Live Temperature"
+            },
+            axisY: {
+                includeZero: false
+            },
+            data: [{
+                type: "line",
+                dataPoints: dps
+            }]
+        });
+
+        var xVal = 0;
+        var yVal = 100;
+        var updateInterval = 1000;
+        var dataLength = 20; // number of dataPoints visible at any point
+
+        var updateChart = function (Time, Temperature) {
+            dps.push({
+                x: Time,
+                y: Temperature
+            });
+            if (dps.length > dataLength) {
+                dps.shift();
+            }
+            chart.render();
+        };
+
+        $("#deviceTitle").text(localStorage.getItem('selectedDevice'));
+
+
+
+
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#sliderHideAndShowOnLight').hide();
+        });
+
+        $('#toggle_event_editing button').click(function () {
+
+            var IsDeviceOn = false;
+
+            if ($(this).hasClass('locked_active') || $(this).hasClass('unlocked_inactive')) {
+                /* code to do when unlocking */
+                $('#switch_status').html('Switched on.');
+                console.log("Switched on.")
+                $('#BulbOnOffId').removeAttr('style');
+                $('#BulbOnOffId').attr('style', "font-size: 200px;color: hsla(50, 100%, 50%, 1);display:block;");
+                $('#sliderHideAndShowOnLight').show();
+                IsDeviceOn = true;
+            } else {
+                /* code to do when locking */
+                $('#switch_status').html('Switched off.');
+                console.log("Switched Off.")
+                $('#BulbOnOffId').removeAttr('style');
+                $('#BulbOnOffId').attr('style', "font-size: 200px;color: hsla(50, 0%, 50%, 1);display:block;");
+                $('#sliderHideAndShowOnLight').hide();
+                IsDeviceOn = false;
+            }
+
+            /* reverse locking status */
+            $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-default btn-info');
+            $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-info btn-default');
+
+            var obj = { deviceStatus: IsDeviceOn };
+            $.ajax({
+                type: "POST",
+                url: "/Devices/SendMessageToMqtt",
+                data: obj,
+                dataType: "text",
+                success: function (response) {
+                    if (response == "error") {
+                        ("Failed to update on mqtt.");
+                    }
+                    else {
+                        alert("Failed to update on mqtt.");
+                    }
+
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+
+        });
+
+
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("myRangeValue");
+        var slidevalue = slider.value;
+        output.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            $('#BulbOnOffId').attr('style', "font-size: 200px;color: hsla(50, " + this.value + "%, 50%, 1);display:block;");
+            output.innerHTML = this.value;
+            slidevalue = this.value;
+            var obj = { silderValue: slidevalue };
+            $.ajax({
+                type: "POST",
+                url: "/Devices/SendMessageToMqtts",
+                data: obj,
+                success: function (response) {
+                    if (response == "error") {
+                        ("Failed to update on mqtt.");
+                    }
+                    else {
+                        alert("Failed to update on mqtt.");
+                    }
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+        }
+
+        var ResetBlobSliderValue = function () {
+            $('#myRange').val('100');
+            $('#myRangeValue').html('100');
+        }
+
+    </script>
+
+
+}
+
+

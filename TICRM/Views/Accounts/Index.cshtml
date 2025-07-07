@@ -1,0 +1,352 @@
+﻿@model IEnumerable<TICRM.DTOs.AccountDto>
+
+@{
+    ViewBag.Title = "Account";
+}
+
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="">Accounts</h3>
+
+        </div>
+        <!--Create Button-->
+        <div>
+
+            <a href="@Url.Action("Create", "Accounts" )" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air">
+                <span>
+                    <i class="la la-plus"></i>
+                    <span>New Accounts</span>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!-- END: Subheader -->
+<div class="m-content">
+
+    <div class="m-portlet m-portlet--mobile">
+
+        <div class="m-portlet__body" style="font-size:initial;">
+
+            <!--begin: Datatable -->
+            <table class="table table-striped- table-bordered table-hover table-checkable" id="m_table_1">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PhoneOffice)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fax)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WebSite)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            Size
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Address
+                        </th>
+                        <th>
+                            shipping Address
+                        </th>
+                        <th>
+                            Industry
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Assigned Team
+                        </th>
+                        <th>
+                            Assigned User
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                    <tr>
+                        <td></td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneOffice)
+                        </td>
+                        <td>
+                            @*<button type="button" class="btn btn-link" onclick="LoadModalForDetails('@item.AccountId')">@Html.DisplayFor(modelItem => item.Name)</button>*@
+                            @Html.ActionLink(item.Name, "AccountsDetail", new { id = item.AccountId })
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fax)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WebSite)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccountSize.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccountType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address.Street1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address1.Street1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Industry.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Team.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Name)
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("Edit", "Edit", new { id=item.AccountId }) |*@
+                            @Html.ActionLink("Edit", "Edit", new { id = item.AccountId }) |
+                            <a href="#" onclick="LoadModalForDelete('@item.AccountId')" class="arial">Delete</a>
+                        </td>
+                    </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- END EXAMPLE TABLE PORTLET-->
+</div>
+
+
+
+
+@section scripts{
+
+    <script>
+
+        $('#m_table_1').DataTable({
+            responsive: true,
+            scrollY: false,
+            scrollX: false,
+            scrollCollapse: true,
+            //== Pagination settings
+            dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
+                                                            <'row'<'col-sm-12'tr>>
+                                                            <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+
+            buttons: [
+                'print',
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5',
+            ],
+            columnDefs: [
+                {
+                    targets: [0,1],   //first name & last name
+                    orderable: false
+                },
+                {
+                    targets: 12,
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            Active: { 'title': 'Active', 'class': ' m-badge--success' },
+                            Inactive: { 'title': 'InActive', 'class': ' m-badge--danger' },
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="m-badge ' + status[data].class + ' m-badge--wide">' + status[data].title + '</span>';
+                    },
+                }
+            ],
+        });
+
+
+        //$('#m_table_Assets').DataTable({
+        //    responsive: false,
+        //    scrollY: false,
+        //    scrollX: true,
+        //    scrollCollapse: true
+        //});
+        //$('#m_table_Location').DataTable({
+        //    responsive: false,
+        //    scrollY: false,
+        //    scrollX: true,
+        //    scrollCollapse: true
+        //});
+        //$('#m_table_Device').DataTable({
+        //    responsive: false,
+        //    scrollY: false,
+        //    scrollX: true,
+        //    scrollCollapse: true
+        //});
+        //$('#m_table_Oppertunity').DataTable({
+        //    responsive: false,
+        //    scrollY: false,
+        //    scrollX: true,
+        //    scrollCollapse: true
+        //});
+
+
+
+        var LoadModalForDetails = function (id) {
+            // not remove this function because it use for open details of account form search click it use in easy auto complte funtion contact to development branch
+            // in master page use in EasyautoCompleteSearch
+
+            $('body').addClass('m-page--loading');
+
+            $.ajax({
+                type: "GET",
+                url: "/Accounts/AccountDetailsPartial",
+                data: { id: id },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+
+                    $('.modal-content').html('').html(response);
+                    $('#m_table_Assets').DataTable({
+                        columnDefs: [
+                            { "width": "10px", "targets": 0 },
+                            { "width": "40px", "targets": 1 },
+                            { "width": "100px", "targets": 2 },
+                            { "width": "70px", "targets": 3 },
+                            { "width": "70px", "targets": 4 },
+                            { "width": "70px", "targets": 5 },
+                            { "width": "70px", "targets": 6 },
+                            { "width": "70px", "targets": 7 },
+                            { "width": "70px", "targets": 8 }
+                        ]
+
+
+                    });
+                    //$('#m_table_Assets').DataTable({
+                    //    responsive: true,
+                    //    scrollY: false,
+                    //    scrollX: true,
+                    //    scrollCollapse: true
+                    //    //columnDefs: [
+                    //    //    { "width": "10px", "targets": 0 },
+                    //    //    { "width": "40px", "targets": 1 },
+                    //    //    { "width": "100px", "targets": 2 },
+                    //    //    { "width": "70px", "targets": 3 },
+                    //    //    { "width": "70px", "targets": 4 },
+                    //    //    { "width": "70px", "targets": 5 },
+                    //    //    { "width": "70px", "targets": 6 },
+                    //    //    { "width": "70px", "targets": 7 },
+                    //    //    { "width": "70px", "targets": 8 }
+                    //    //]
+                    //});
+
+                    //$('#m_table_Location').DataTable({
+                    //    responsive: false,
+                    //    scrollY: false,
+                    //    scrollX: true,
+                    //    scrollCollapse: false
+                    //});
+                    $('#m_table_Location').DataTable({ scrollX: true });
+                    $('#m_table_Device').DataTable({ scrollX: true });
+
+                    $('#m_table_Oppertunity').DataTable({ scrollX: true });
+                    //$('#m_table_Device').DataTable({
+                    //    //responsive: true,
+                    //    //scrollY: false,
+                    //    //scrollX: true,
+                    //    //scrollCollapse: true,
+                    //    columnDefs: [
+                    //        { "width": "30px", "targets": 0 },
+                    //        { "width": "40px", "targets": 1 },
+                    //        { "width": "100px", "targets": 2 },
+                    //        { "width": "70px", "targets": 3 },
+                    //        { "width": "70px", "targets": 4 },
+                    //        { "width": "70px", "targets": 5 },
+                    //        { "width": "70px", "targets": 6 },
+                    //        { "width": "70px", "targets": 7 },
+                    //        { "width": "70px", "targets": 8 },
+                    //        { "width": "70px", "targets": 9 }
+                    //    ]
+                    //});
+                    //$('#m_table_Oppertunity').DataTable({
+                    //    responsive: false,
+                    //    scrollY: false,
+                    //    scrollX: true,
+                    //    scrollCollapse: true
+                    //});
+                    $('#m_modal_Details').modal('show');
+
+                    $('body').removeClass('m-page--loading');
+                },
+                failure: function () {
+                    alert("Failed!");
+                    $('body').removeClass('m-page--loading');
+                }
+            });
+        }
+
+        var LoadModalForDelete = function (id) {
+            // not remove this function because it use for open details of account form search click it use in easy auto complte funtion contact to development branch
+            // in master page use in EasyautoCompleteSearch
+
+            $('body').addClass('m-page--loading');
+
+            $.ajax({
+                type: "GET",
+                url: "/Accounts/PartialDeleteOnId",
+                data: { id: id },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+                    $('.modal-content').html('').html(response);
+
+                    $('#m_modal_Delete').modal('show');
+                    $('body').removeClass('m-page--loading');
+                },
+                failure: function () {
+                    alert("Failed!");
+                    $('body').removeClass('m-page--loading');
+                }
+            });
+        }
+
+
+
+
+
+
+    </script>
+}
+

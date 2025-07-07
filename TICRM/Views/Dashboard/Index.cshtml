@@ -1,0 +1,987 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<style>
+    .ct-label {
+        fill: #ffffff !important;
+        color: #ffffff !important;
+        font-size: 1.75rem !important;
+        line-height: 1;
+    }
+
+    /*.m-timeline-2:before {
+        left: 5.8rem !important;
+    }
+
+    .m-timeline-2 .m-timeline-2__items .m-timeline-2__item .m-timeline-2__item-cricle {
+        left: 5.1rem !important;
+    }*/
+</style>
+
+
+
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Dashboard</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-home"></i>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="" class="m-nav__link">
+                        <span class="m-nav__link-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="" class="m-nav__link">
+                        <span class="m-nav__link-text">Reports</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
+                <span class="m-subheader__daterange-label">
+                    <span class="m-subheader__daterange-title"></span>
+                    <span class="m-subheader__daterange-date m--font-brand"></span>
+                </span>
+                <a href="#" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
+                    <i class="la la-angle-down"></i>
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- END: Subheader -->
+<div class="m-content">
+
+    <!--Begin::Section-->
+
+    <div class="row">
+        <div class="col-lg-4">
+
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--tab">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                Device Status
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="ct-chart ct-golden-section" style="height:300px;"></div>
+                </div>
+            </div>
+
+            <!--end::Portlet-->
+        </div>
+        <div class="col-xl-8">
+            <div class="m-portlet m-portlet--tab">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                Device Location
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div id="map" style="height: 300px;"></div>
+                    @*<img src="~/Content/Images/maps.png" style="height:300px;" />*@
+
+                </div>
+            </div>
+        </div>
+        @*<div class="col-xl-4">
+                <div class="m-portlet m-portlet--tab">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <span class="m-portlet__head-icon m--hide">
+                                    <i class="la la-gear"></i>
+                                </span>
+                                <h3 class="m-portlet__head-text">
+                                    Device Readings
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <div id="chartContainer" style="height: 300px; width:100%;"></div>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+
+    <!--End::Section-->
+    <!--Begin::Section-->
+
+    <div class="row">
+
+        <div class="col-xl-8">
+            <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Devices Temprature
+                            </h3>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="m-portlet__body">
+
+                    <!--begin: Datatable -->
+                    <div class="m_datatable1" id="m_datatable_latest_orders1"></div>
+
+                    <!--end: Datatable -->
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xl-4">
+
+            <!--begin:: Widgets/Quick Stats-->
+            <div class="row m-row--full-height">
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="m-portlet m-portlet--half-height m-portlet--border-bottom-brand  m-portlet--rounded">
+                        <div class="m-portlet__body">
+                            <div class="m-widget26">
+                                <div class="m-widget26__number">
+                                    570
+                                    <small>Leads</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m--space-30"></div>
+                    <div class="m-portlet m-portlet--half-height m-portlet--border-bottom-danger  m-portlet--rounded">
+                        <div class="m-portlet__body">
+                            <div class="m-widget26">
+                                <div class="m-widget26__number">
+                                    690
+                                    <small>Devices</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="m-portlet m-portlet--half-height m-portlet--border-bottom-success  m-portlet--rounded">
+                        <div class="m-portlet__body">
+                            <div class="m-widget26">
+                                <div class="m-widget26__number">
+                                    230
+                                    <small>Oppertunities</small>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m--space-30"></div>
+                    <div class="m-portlet m-portlet--half-height m-portlet--border-bottom-accent  m-portlet--rounded">
+                        <div class="m-portlet__body">
+                            <div class="m-widget26">
+                                <div class="m-widget26__number">
+                                    470
+                                    <small>Accounts</small>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end:: Widgets/Quick Stats-->
+        </div>
+    </div>
+
+    <!--End::Section-->
+    <!--Begin::Section-->
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Packages-->
+            <!--end:: Packages-->
+        </div>
+    </div>
+
+    <!--End::Section-->
+    <!--Begin::Section-->
+    <div class="row">
+        <div class="col-xl-6 col-lg-12">
+            <!--Begin::Portlet-->
+            <div class="m-portlet  m-portlet--full-height  m-portlet--rounded">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Queue
+                            </h3>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-scrollable" data-scrollable="true" data-height="380" data-mobile-height="300">
+
+                        <!--Begin::Timeline 2 -->
+                        <div class="m-timeline-2" id="QueuelistOnDashboard">
+                            <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">
+                            </div>
+                        </div>
+
+                        <!--End::Timeline 2 -->
+                    </div>
+                </div>
+            </div>
+            <!--End::Portlet-->
+        </div>
+        <div class="col-xl-6 col-lg-12">
+
+            <!--Begin::Portlet-->
+            <div class="m-portlet m-portlet--full-height  m-portlet--rounded">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Recent Notifications
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" role="tablist">
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_widget2_tab1_content" role="tab">
+                                    Today
+                                </a>
+                            </li>
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_widget2_tab2_content" role="tab">
+                                    Month
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content" data-scrollable="true" data-height="380" data-mobile-height="300">
+                        <div class="tab-pane active" id="m_widget2_tab1_content">
+
+                            <!--Begin::Timeline 3 -->
+                            <div class="m-timeline-3">
+                                <div class="m-timeline-3__items">
+                                    <div class="m-timeline-3__item m-timeline-3__item--info">
+                                        <span class="m-timeline-3__item-time">09:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-user-name">
+                                                <span class="m-link m-link--metal m-timeline-3__item-link">
+                                                    Exception
+                                                </span>
+                                            </span>
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit amit,consectetur eiusmdd tempor
+                                                Lorem ipsum dolor sit amit,consectetur eiusmdd tempor
+                                                Lorem ipsum dolor sit amit,consectetur eiusmdd tempor
+                                                Lorem ipsum dolor sit amit,consectetur eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Bob
+                                                </a>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--warning">
+                                        <span class="m-timeline-3__item-time">10:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit amit
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Sean
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time">11:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit amit eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By James
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--success">
+                                        <span class="m-timeline-3__item-time">12:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By James
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--danger">
+                                        <span class="m-timeline-3__item-time">14:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit amit,consectetur eiusmdd
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Derrick
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--info">
+                                        <span class="m-timeline-3__item-time">15:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit amit,consectetur
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Iman
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time">17:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit consectetur eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Aziko
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time">17:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit consectetur eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Aziko
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time">17:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit consectetur eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Aziko
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time">17:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit consectetur eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Aziko
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time">17:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit consectetur eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Aziko
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time">17:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem ipsum dolor sit consectetur eiusmdd tempor
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Aziko
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!--End::Timeline 3 -->
+                        </div>
+                        <div class="tab-pane" id="m_widget2_tab2_content">
+
+                            <!--Begin::Timeline 3 -->
+                            <div class="m-timeline-3">
+                                <div class="m-timeline-3__items">
+                                    <div class="m-timeline-3__item m-timeline-3__item--info">
+                                        <span class="m-timeline-3__item-time m--font-focus">09:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Contrary to popular belief, Lorem Ipsum is not simply random text.
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Bob
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--warning">
+                                        <span class="m-timeline-3__item-time m--font-warning">10:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                There are many variations of passages of Lorem Ipsum available.
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Sean
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time m--font-primary">11:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Contrary to popular belief, Lorem Ipsum is not simply random text.
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By James
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--success">
+                                        <span class="m-timeline-3__item-time m--font-success">12:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                The standard chunk of Lorem Ipsum used since the 1500s is reproduced.
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By James
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--danger">
+                                        <span class="m-timeline-3__item-time m--font-warning">14:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Latin words, combined with a handful of model sentence structures.
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Derrick
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--info">
+                                        <span class="m-timeline-3__item-time m--font-info">15:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Contrary to popular belief, Lorem Ipsum is not simply random text.
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Iman
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-timeline-3__item m-timeline-3__item--brand">
+                                        <span class="m-timeline-3__item-time m--font-danger">17:00</span>
+                                        <div class="m-timeline-3__item-desc">
+                                            <span class="m-timeline-3__item-text">
+                                                Lorem Ipsum is therefore always free from repetition, injected humour.
+                                            </span><br>
+                                            <span class="m-timeline-3__item-user-name">
+                                                <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                                                    By Aziko
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--End::Timeline 3 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--End::Portlet-->
+        </div>
+    </div>
+
+    <!--End::Section-->
+
+
+</div>
+
+
+@section scripts{
+
+    <!--it is used for Read temprature-->
+    <script src="~/Content/canvasjs.min.js"></script>
+    <script>
+        var INCADashboard = function () {
+            var datatableLatestOrders1 = function () {
+                if ($('#m_datatable_latest_orders1').length === 0) {
+                    return;
+                }
+
+                var datatable = $('.m_datatable1').mDatatable({
+                    data: {
+                        type: 'remote',
+                        source: {
+                            read: {
+                                url: '../Devices/GetListOfDevice'
+                            }
+                        },
+                        pageSize: 10,
+                        saveState: {
+                            cookie: false,
+                            webstorage: true
+                        },
+                        serverPaging: true,
+                        serverFiltering: true,
+                        serverSorting: true
+                    },
+
+                    layout: {
+                        theme: 'default',
+                        class: '',
+                        scroll: true,
+                        //height: 380,
+                        footer: false
+                    },
+
+                    sortable: true,
+
+                    filterable: false,
+
+                    pagination: true,
+
+                    columns: [{
+                        field: "Name",
+                        title: "Name",
+                        sortable: 'asc',
+                        filterable: false,
+                        //width: 150
+                    }, {
+                        field: "Mac",
+                        title: "Mac",
+                        //width: 150,
+                        responsive: {
+                            visible: 'lg'
+                        }
+                    }, {
+                        field: "EMEINumber",
+                        title: "EMEINumber"
+                    },
+                    {
+                        field: "Latitude",
+                        title: "Latitude"
+                    },
+                    {
+                        field: "Longitude",
+                        title: "Longitude"
+                    },
+                    {
+                        field: "Status.Name",
+                        title: "Status",
+                        width: 70,
+                        // callback function support for column rendering
+                        template: function (row) {
+                            console.log(row);
+                            var status = {
+                                InActive: {
+                                    'Name': 'InActive',
+                                    'title': 'Pending',
+                                    'class': 'm-badge--brand'
+                                },
+                                Active: {
+                                    'Name': 'Active',
+                                    'title': 'Success',
+                                    'class': ' m-badge--success'
+                                },
+                            };
+                            //return '<span class="m-badge m-badge--wide">title</span>';
+                            //return '<span class="m-badge ' + status[row.Status.Name].class + ' m-badge--wide">' + status[row.Status.Name].title + '</span>';
+                            return '<span class="m-badge m-badge--success m-badge--wide">Active</span>';
+                        }
+                    },
+
+                    {
+                        field: "Actions",
+                        width: 50,
+                        title: "Actions",
+                        sortable: false,
+                        overflow: 'visible',
+                        template: function (row, index, datatable) {
+                            var dropup = (datatable.getPageSize() - index) <= 4 ? 'dropup' : '';
+                            return '\
+                                                                                        <a href="../Devices/Edit/'+ row.DeviceId + '" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details">\
+                                                                                            <i class="la la-edit"></i>\
+                                                                                        </a>\
+                                                                                    ';
+                        }
+                    }
+
+                    ]
+                });
+            }
+
+
+
+            return {
+                //== Init INCA Dashboard
+                init: function () {
+                    datatableLatestOrders1();
+                }
+            };
+
+        }();
+
+        jQuery(document).ready(function () {
+            INCADashboard.init();
+            DevicePieChart();
+
+            $.ajax({
+                type: "GET",
+                url: "/WorkFlows/GetQueueList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (response) {
+                    var shift = 1;
+
+                    var htmlData = '<div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">';
+
+                    var data = JSON.parse(response);
+                    htmlData += '<div class="m-timeline-2__item">';
+                    htmlData += '    <span class="m-timeline-2__item-time">14:00</span>';
+                    htmlData += '    <div class="m-timeline-2__item-cricle">';
+                    htmlData += '        <i class="fa fa-genderless m--font-brand"></i>';
+                    htmlData += '    </div>';
+                    htmlData += '    <div class="m-timeline-2__item-text m--padding-top-5">' + data[0].Name + ' ' + data[0].Name + '</div>';
+                    htmlData += '</div>';
+                    for (var i = 1; i < data.length; i++) {
+
+
+                        if (shift == 1) {
+                            htmlData += '<div class="m-timeline-2__item m--margin-top-30">';
+                            htmlData += '    <span class="m-timeline-2__item-time">14:00</span>';
+                            htmlData += '    <div class="m-timeline-2__item-cricle">';
+                            htmlData += '        <i class="fa fa-genderless m--font-success"></i>';
+                            htmlData += '    </div>';
+                            htmlData += '    <div class="m-timeline-2__item-text m--padding-top-5">' + data[i].Name + ' ' + data[i].Name + '</div>';
+                            htmlData += '</div>';
+                            shift = 2;
+                        }
+                        else if (shift == 2) {
+                            htmlData += '<div class="m-timeline-2__item m--margin-top-30">';
+                            htmlData += '    <span class="m-timeline-2__item-time">14:00</span>';
+                            htmlData += '    <div class="m-timeline-2__item-cricle">';
+                            htmlData += '        <i class="fa fa-genderless m--font-brand"></i>';
+                            htmlData += '    </div>';
+                            htmlData += '    <div class="m-timeline-2__item-text m--padding-top-5">' + data[i].Name + ' ' + data[i].Name + '</div>';
+                            htmlData += '</div>';
+                            shift = 3;
+                        }
+                        else if (shift == 3) {
+                            htmlData += '<div class="m-timeline-2__item m--margin-top-30">';
+                            htmlData += '    <span class="m-timeline-2__item-time">14:00</span>';
+                            htmlData += '    <div class="m-timeline-2__item-cricle">';
+                            htmlData += '        <i class="fa fa-genderless m--font-info"></i>';
+                            htmlData += '    </div>';
+                            htmlData += '    <div class="m-timeline-2__item-text m--padding-top-5">' + data[i].Name + ' ' + data[i].Name + '</div>';
+                            htmlData += '</div>';
+                            shift = 4;
+                        }
+                        else if (shift == 4) {
+
+                            htmlData += '<div class="m-timeline-2__item m--margin-top-30">';
+                            htmlData += '    <span class="m-timeline-2__item-time">14:00</span>';
+                            htmlData += '    <div class="m-timeline-2__item-cricle">';
+                            htmlData += '        <i class="fa fa-genderless m--font-danger"></i>';
+                            htmlData += '    </div>';
+                            htmlData += '    <div class="m-timeline-2__item-text m--padding-top-5">' + data[i].Name + ' ' + data[i].Name + '</div>';
+                            htmlData += '</div>';
+                            shift = 1;
+                        }
+                    }
+                    htmlData += '</div>';
+                    $('#QueuelistOnDashboard').html(htmlData);
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+
+        });
+
+        var DevicePieChart = function () {
+            if ($('.ct-chart').length == 0) {
+                return;
+            }
+
+            var chart = new Chartist.Pie('.ct-chart', {
+                series: [{
+                    value: 32,
+                    className: 'custom',
+                    meta: {
+                        color: 'green'
+                    }
+                },
+                {
+                    value: 4,
+                    className: 'custom',
+                    meta: {
+                        color: mApp.getColor('warning')
+                    }
+                }
+                ],
+            }, {
+                    donut: true,
+                    donutWidth: 40,
+                    showLabel: true
+                });
+
+            chart.on('draw', function (data) {
+                if (data.type === 'slice') {
+                    // Get the total path length in order to use for dash array animation
+                    var pathLength = data.element._node.getTotalLength();
+
+                    // Set a dasharray that matches the path length as prerequisite to animate dashoffset
+                    data.element.attr({
+                        'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+                    });
+
+                    // Create animation definition while also assigning an ID to the animation for later sync usage
+                    var animationDefinition = {
+                        'stroke-dashoffset': {
+                            id: 'anim' + data.index,
+                            dur: 1000,
+                            from: -pathLength + 'px',
+                            to: '10px',
+                            easing: Chartist.Svg.Easing.easeOutQuint,
+                            // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+                            fill: 'freeze',
+                            'stroke': data.meta.color
+                        }
+                    };
+
+                    // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+                    if (data.index !== 0) {
+                        animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+                    }
+
+                    // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+
+                    data.element.attr({
+                        'stroke-dashoffset': -pathLength + 'px',
+                        'stroke': data.meta.color
+                    });
+
+                    // We can't use guided mode as the animations need to rely on setting begin manually
+                    // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+                    data.element.animate(animationDefinition, false);
+                }
+            });
+
+            // For the sake of the example we update the chart every time it's created with a delay of 8 seconds
+            chart.on('created', function () {
+                if (window.__anim21278907124) {
+                    clearTimeout(window.__anim21278907124);
+                    window.__anim21278907124 = null;
+                }
+                window.__anim21278907124 = setTimeout(chart.update.bind(chart), 15000);
+            });
+        };
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+        var dps = []; // dataPoints
+        var chart = new CanvasJS.Chart("chartContainer", {
+            title: {
+                text: "Live Temperature"
+            },
+            axisY: {
+                includeZero: false
+            },
+            data: [{
+                type: "line",
+                dataPoints: dps
+            }]
+        });
+
+        var xVal = 0;
+        var yVal = 100;
+        var updateInterval = 1000;
+        var dataLength = 20; // number of dataPoints visible at any point
+
+        var updateChart = function (Time, Temperature) {
+            dps.push({
+                x: Time,
+                y: Temperature
+            });
+            if (dps.length > dataLength) {
+                dps.shift();
+            }
+            chart.render();
+        };
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    </script>
+    @*<script src="https://maps.google.com/maps/api/js?key=AIzaSyCRrN3Wxp2sOTtJtjaVjVh_V_-Uthsg4zo"></script>*@
+
+    <script type="text/javascript">
+
+        var devices = new Array();
+        var markers = new Array();
+        // Standard google maps function
+        var isLoaded = false;
+
+        function initialize() {
+            var myLatlng = new google.maps.LatLng(31.533353, 74.3382643);
+            var myOptions = {
+                zoom: 12,
+                center: myLatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            map = new google.maps.Map(document.getElementById("map"), myOptions);
+        }
+
+
+
+
+
+        var updateMap = function (mac, latitude, longitude) {
+            if (isLoaded == false) {
+                initialize();
+                isLoaded = true;
+
+            }
+
+            if (devices.indexOf(mac) > -1) {
+
+                // ignore
+                console.log("Marker already there");
+            }
+            else {
+                console.log("Placing New Marker");
+                // update google marker
+                devices.push(mac);
+                markers.push(mac, latitude, longitude);
+                var location = new google.maps.LatLng(latitude, longitude);
+                addMarker(location, mac, "/devices/device");
+                //placeMarker(mac, latitude, longitude);
+            }
+
+
+
+        };
+
+
+        function placeMarker(mac, latitude, longitude) {
+            CentralPark = new google.maps.LatLng(latitude, longitude);
+            addMarker(CentralPark);
+        }
+
+        // Function for adding a marker to the page.
+        function addMarker(location, mac, deviceUrl) {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: mac,
+                url: deviceUrl
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                MACSelectedForMap(mac);
+                window.location.href = this.url;
+            });
+        }
+
+
+                                    //var locations = [
+                                    //  ['Tech Implement', 31.533353, 74.3382643, 4],
+                                    //  //['Coogee Beach', -33.923036, 151.259052, 5],
+                                    //  //['Cronulla Beach', -34.028249, 151.157507, 3],
+                                    //  //['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+                                    //  //['Maroubra Beach', -33.950198, 151.259302, 1]
+                                    //];
+
+
+    </script>
+
+}
+

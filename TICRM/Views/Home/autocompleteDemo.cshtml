@@ -1,0 +1,81 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>autocompleteDemo</title>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.themes.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
+</head>
+<body>
+    <div>
+
+        <form method="get" id="form-test">
+            <input id="provider-file">
+            <input type="hidden" id="id-value" name="get_value">
+            <input type="submit">
+        </form>
+
+    </div>
+
+    <script>
+
+
+        $(document).ready(function () {
+            var options = {
+                url: "http://easyautocomplete.com/resources/countries.json",
+
+                getValue: "name",
+
+                list: {
+                    match: {
+                        enabled: true
+                    }
+                }
+            };
+
+            $("#provider-file").easyAutocomplete(options);
+        });
+
+        //$(document).ready(function () {
+        //    var options = {
+        //        data: [{
+        //            "name": "Bob",
+        //            "id": "1"
+        //        }, {
+        //            "name": "David",
+        //            "id": "2"
+        //        }, {
+        //            "name": "Steve",
+        //            "id": "3"
+        //        }],
+        //        getValue: "name",
+        //        list: {
+        //            onSelectItemEvent: function () {
+        //                var value = $("#provider-file").getSelectedItemData().id; //get the id associated with the selected value
+        //                $("#id-value").val(value).trigger("change"); //copy it to the hidden field
+        //            }
+        //        }
+        //    };
+        //    $("#provider-file").easyAutocomplete(options);
+
+        //    // used to validate what gets submitted
+        //    $("#form-test").on('submit', function (e) {
+        //        e.preventDefault();
+        //        console.log($(this).serialize());
+        //    });
+        //});
+
+
+    </script>
+
+</body>
+</html>

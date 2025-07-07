@@ -1,0 +1,403 @@
+﻿@model IEnumerable<TICRM.DTOs.GlobalSearchDto>
+@{
+    ViewBag.Title = "GlobalSearch";
+}
+
+
+
+
+        <!-- BEGIN: Subheader -->
+        <div class="m-subheader ">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto">
+                    <h3 class="m-subheader__title m-subheader__title--separator">GlobalSearch</h3>
+                    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                        <li class="m-nav__item m-nav__item--home">
+                            <a href="@Url.Action("Index","Home")" class="m-nav__link m-nav__link--icon">
+                                <i class="m-nav__link-icon la la-home"></i>
+                            </a>
+                        </li>
+                        <li class="m-nav__separator">-</li>
+                        <li class="m-nav__item">
+                            <a href="@Url.Action("Index","GlobalSearch")" class="m-nav__link">
+                                <span class="m-nav__link-text">Global Search</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- END: Subheader -->
+        <div class="m-content">
+
+            <!--Begin::Section-->
+            <div class="row">
+
+                <div class="col-xl-12">
+                    <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                        <div class="m-portlet__body">
+
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    <label id="deviceTitle">Create/Update Global Search</label>
+                                </h3>
+                            </div>
+
+
+
+                            <div class="form-group m-form__group row">
+                                <div class="col-md-6 col-lg-6" style="padding-top:10px;">
+
+                                    <div class="form-group" style="display:none;">
+                                        <label for="GlobalSearchId">GlobalSearchId</label>
+                                        <input type="text" class="form-control" id="GlobalSearchId">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Name">Cammand Name</label>
+                                        <input type="text" class="form-control" id="Name" placeholder="Enter Search Name">
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 col-lg-6" style="padding-top:10px;">
+                                    <div class="form-group">
+                                        <label for="URL">URL (Example:/Devices) </label>
+                                        <input type="text" class="form-control" id="URL" placeholder="/URL">
+                                    </div>
+
+
+                                </div>
+                            </div>
+                                <br />
+                                <div class="col-md-12">
+                                    <hr />
+                                    <button type="button" id="SubmitGlobalSearchId" class="btn btn-primary">Submit</button>
+                                    <button type="button" id="refresh_GlobalSearch" class="btn btn-primary">Cancel</button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                </div>
+
+
+
+
+            </div>
+            <!--End::Section-->
+            <!--Begin::Section-->
+
+            <div class="row">
+
+                <div class="col-xl-12">
+                    <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+
+                        <div class="m-portlet__body">
+
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    Global Search List
+                                </h3>
+                            </div>
+
+
+                            <div class="m_datatable1" id="m_datatable_latest_orders1"></div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--End::Section-->
+
+        </div>
+    
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+
+
+        $(function () {
+             LoadGlobalSearchList();
+        });
+
+
+        function LoadGlobalSearchList() {
+            $('#m_datatable_latest_orders1').html('');
+
+            $('.m_datatable1').mDatatable({
+                data: {
+                    type: 'remote',
+                    source: {
+                        read: {
+                            url: '../GlobalSearch/GetGlobalSearchList'
+                        }
+                    },
+                    pageSize: 10,
+                    saveState: {
+                        cookie: false,
+                        webstorage: true
+                    },
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true
+                },
+
+                layout: {
+                    theme: 'default',
+                    class: '',
+                    scroll: true,
+                    //height: 380,
+                    footer: false
+                },
+
+                sortable: true,
+
+                filterable: false,
+
+                pagination: true,
+
+                columns: [{
+                    field: "Name",
+                    title: "Name",
+                    sortable: 'asc',
+                    filterable: false,
+                    //width: 150
+                },
+                {
+                    field: "URL",
+                    title: "URL",
+                },
+                {
+                    field: "Type",
+                    title: "Type"
+                },
+                {
+                    field: "Actions",
+                    width: 50,
+                    title: "Actions",
+                    sortable: false,
+                    overflow: 'visible',
+                    template: function (row, index, datatable) {
+                        var dropup = (datatable.getPageSize() - index) <= 4 ? 'dropup' : '';
+                        return '\
+                                                        <button type="button" onClick="EditGlobalSearch(\'' + row.GlobalSearchId + '\')" class="btn btn-xs btn-info">Edit</button>\
+                                                        &nbsp;<button type="button" onClick="DeleteGlobalSearh(\'' + row.GlobalSearchId + '\')" class="btn btn-xs btn-danger">Delete</button>\
+                                                    ';
+                    }
+                }
+
+                ]
+            });
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/GlobalSearch/GetGlobalSearchList",
+            //    contentType: "application/json; charset=utf-8",
+            //    success: function (response) {
+            //        $('#GlobalSearchGridtbody').html('');
+            //        var data = JSON.parse(response);
+            //        var options = '';
+            //        options += '<tr>';
+            //        for (var i = 0; i < data.length; i++) {
+            //            options += '<tr>';
+            //            options += '<td>' + data[i].Name + '</td>';
+            //            options += '<td>' + data[i].URL + '</td>';
+            //            options += '<td>';
+            //            options += '<button type="button" onClick="EditGlobalSearch(\'' + data[i].GlobalSearchId + '\')" class="btn btn-xs btn-info">Edit</button>';
+            //            options += '&nbsp;<button type="button" onClick="DeleteGlobalSearh(\'' + data[i].GlobalSearchId + '\')" class="btn btn-xs btn-danger">Delete</button>';
+            //            options += '</td></tr>';
+            //        }
+            //        $('#GlobalSearchGridtbody').append(options);
+            //        $('#m_table_1').DataTable();
+            //    },
+            //    failure: function () {
+            //        alert("Failed!");
+            //    }
+            //});
+
+
+        }
+
+
+
+        var isEditMode = false;
+
+        function ResetGlobalSearch() {
+            $('#GlobalSearchId').val('');
+            $('#Name').val('');
+            $('#URL').val('');
+
+
+            isEditMode = false;
+
+            $('#SubmitGlobalSearchId').removeAttr('disabled');
+            $('#SubmitGlobalSearchId').html('Submit');
+        }
+
+
+        $('#refresh_GlobalSearch').on("click", function () {
+            ResetGlobalSearch();
+        });
+
+        $('#SubmitGlobalSearchId').on("click", function () {
+
+
+
+            var GlobalSearchId = $('#GlobalSearchId').val();
+
+            var Name = $('#Name').val();
+            var URL = $('#URL').val();
+
+
+            var patt1 = /(\/)\w+/g;
+            var result = URL.match(patt1);
+            if (!result) {
+                var path2 = /(\/)/g;
+                var result1 = URL.match(path2);
+                if (!result1) {
+                    alert("Please Insert URL start with Charector '/' ");
+                    return false;
+                }
+            }
+
+
+            $('#SubmitGlobalSearchId').attr('disabled', 'disabled');
+            $('#SubmitGlobalSearchId').html('Please wait..');
+
+
+
+            if (isEditMode == true) {
+                var obj = { GlobalSearchId: GlobalSearchId, Name: Name, URL: URL };
+
+                $.ajax({
+                    type: "GET",
+                    url: "/GlobalSearch/UpdateGlobalSearch",
+                    data: obj,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (response) {
+                        if (response == "error") {
+                            alert("Global/Cammand Search Data not Saved. Please Refresh the page.");
+                        }
+                        window.location.reload();
+                        //LoadGlobalSearchList();
+                        ResetGlobalSearch();
+                    },
+                    failure: function () {
+                        alert("Failed!");
+                    }
+                });
+
+            }
+            else {
+                var obj = { Name: Name, URL: URL };
+
+                $.ajax({
+                    type: "GET",
+                    url: "/GlobalSearch/SubmitGlobalSearch",
+                    data: obj,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (response) {
+                        if (response == "error") {
+                            alert("Global/Cammand Search Data not Saved. Please Refresh the page.");
+                        }
+                        window.location.reload();
+                        //LoadGlobalSearchList();
+                        ResetGlobalSearch();
+                    },
+                    failure: function () {
+                        alert("Failed!");
+                    }
+                });
+
+            }
+
+
+
+
+        });
+
+
+
+
+
+        function EditGlobalSearch(value) {
+
+            var obj = { GlobalSearchId: value };
+            $.ajax({
+                type: "GET",
+                url: "/GlobalSearch/EditGlobalSearch",
+                data: obj,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#GlobalSearchId').val(response.GlobalSearchId);
+                    $('#Name').val(response.Name);
+                    $('#URL').val(response.URL);
+
+                    $('#SubmitGlobalSearchId').removeAttr('disabled');
+                    $('#SubmitGlobalSearchId').html('Update');
+                    isEditMode = true;
+                },
+                failure: function () {
+                    alert("Failed!");
+                }
+            });
+        }
+
+
+        function DeleteGlobalSearh(value) {
+            var confirm = window.confirm('Are you sure you want to delete!!');
+            if (confirm) {
+                var obj = { GlobalSearchId: value };
+                $.ajax({
+                    type: "GET",
+                    url: "/GlobalSearch/DeleteGlobalSearch",
+                    data: obj,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (response) {
+                        if (response == "error") {
+                            alert("Global/Cammand Search not Deleted. Please Refresh the page.");
+                        }
+                        window.location.reload();
+                        //LoadGlobalSearchList();
+                        ResetGlobalSearch();
+                        ClearSearchSession();
+                    },
+                    failure: function () {
+                        alert("Failed!");
+                    }
+                });
+            }
+        }
+
+
+    </script>
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+

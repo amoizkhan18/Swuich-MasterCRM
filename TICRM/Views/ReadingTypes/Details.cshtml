@@ -1,0 +1,38 @@
+﻿@model TICRM.DAL.ReadingType
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutTICRM.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ReadingType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Reading Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ReadingTypeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<script src="~/Content/plugins/jQuery/jQuery-2.1.3.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#searchNavigationList').append('<li><a href="/ReadingTypes">Reading Types</a></li>');
+        $('#searchNavigationList').append('<li><a href="@Url.Action("Details", "ReadingTypes", new { id = Model.ReadingTypeId })">Details @Model.Name</a></li>');
+
+    });
+</script>
+
